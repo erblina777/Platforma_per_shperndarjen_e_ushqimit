@@ -1,0 +1,28 @@
+{
+  "name": "platforma_per_shperndarjen_e_ushqimit",
+  "version": "1.0.0",
+  "description": "Ky projekt është një platformë web për porositjen e ushqimit online.\r Ai lidh klientët, restorantet dhe shoferët për të menaxhuar porositë dhe dërgesat.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/erblina777/Platforma_per_shperndarjen_e_ushqimit.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/erblina777/Platforma_per_shperndarjen_e_ushqimit/issues"
+  },
+  "homepage": "https://github.com/erblina777/Platforma_per_shperndarjen_e_ushqimit#readme",
+  "dependencies": {
+    "body-parser": "^2.2.2",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mysql": "^2.18.1"
+  }
+}
