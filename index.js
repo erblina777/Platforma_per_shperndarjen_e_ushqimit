@@ -19,6 +19,13 @@ const usersRoutes = require('./routes/users');
 app.use('/users', usersRoutes);
 //app.use('/restaurants', restaurantsRoutes);
 //app.use('/orders', ordersRoutes);
+// Roles
+const rolesRoutes = require('./routes/roles');
+app.use('/roles', rolesRoutes);
+
+// UserRoles
+const userRolesRoutes = require('./routes/userroles');
+app.use('/userroles', userRolesRoutes);
 
 // test route
 app.get('/', (req, res) => {
