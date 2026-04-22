@@ -12,13 +12,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // ROUTES
 const usersRoutes = require('./routes/users');
-//const restaurantsRoutes = require('./routes/restaurants');
-//const ordersRoutes = require('./routes/orders');
-// shto tjerat gradualisht
+const restaurantsRoutes = require('./routes/restaurants');
+const menuCategoriesRoutes = require('./routes/menucategories');
+const ordersRoutes = require('./routes/orders');
+const menuItemsRoutes = require('./routes/menuitems');
 
 app.use('/users', usersRoutes);
-//app.use('/restaurants', restaurantsRoutes);
-//app.use('/orders', ordersRoutes);
+app.use('/restaurants', restaurantsRoutes);
+app.use('/menucategories', menuCategoriesRoutes);
+app.use('/orders', ordersRoutes);
+app.use('/menuitems', menuItemsRoutes);
 // Roles
 const rolesRoutes = require('./routes/roles');
 app.use('/roles', rolesRoutes);
