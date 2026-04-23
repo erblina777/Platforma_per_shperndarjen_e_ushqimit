@@ -42,7 +42,7 @@ class Users {
   }
 
   static create(user, callback) {
-    const query = "INSERT INTO users (emri, mbiemri, email, password_hash) VALUES (?, ?, ?, ?, ?)";
+    const query = "INSERT INTO users (emri, mbiemri, email, password_hash, status) VALUES (?, ?, ?, ?, ?)";
     const values = [user.emri, user.mbiemri, user.email, user.password_hash, "active"];
 
     connection.query(query, values, (err, result) => {

@@ -21,14 +21,14 @@ const MerrUserById = async (req, res) => {
 };
 
 const ShtoUser = async (req, res) => {
-  const { emri, email, password } = req.body;
+  const { emri, mbiemri, email, password } = req.body;
 
   if (req.user) {
     return res.status(409).json({ message: "User ekziston me këtë email" });
   }
 
   try {
-    const user = new Users(null, emri, email, password);
+    const user = new Users(null, emri, mbiemri, email, password, "active");
     Users.create(user, (newUser) => res.status(201).json(newUser));
   } catch (err) {
     res.status(500).send("Server Error");
@@ -38,9 +38,9 @@ const ShtoUser = async (req, res) => {
 const NdryshoUser = async (req, res) => {
   try {
     const id = req.params.id;
-    const { emri, email, password } = req.body;
+    const { emri, mbiemri, email, password, status } = req.body;
 
-    const user = new Users(id, emri, email, password);
+    const user = new Users(id, emri, mbiemri, email, password, status);
 
     Users.update(user, (updated) => res.json(updated));
   } catch (err) {
