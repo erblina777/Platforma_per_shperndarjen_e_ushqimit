@@ -30,6 +30,18 @@ app.use('/roles', rolesRoutes);
 const userRolesRoutes = require('./routes/userroles');
 app.use('/userroles', userRolesRoutes);
 
+//OrderItems
+const orderItemsRoutes = require('./routes/orderitems');
+app.use('/orderitems', orderItemsRoutes);
+
+// DeliveryDrivers
+const driversRoutes = require('./routes/deliverydrivers');
+app.use('/drivers', driversRoutes);
+
+// Deliveries 
+const deliveriesRoutes = require('./routes/deliveries');
+app.use('/deliveries', deliveriesRoutes);
+
 // test route
 app.get('/', (req, res) => {
   res.send('Food Delivery API po punon 🚀');
