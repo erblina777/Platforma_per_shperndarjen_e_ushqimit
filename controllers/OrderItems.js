@@ -1,7 +1,11 @@
 const OrderItems = require('../models/orderitems');
 
 const MerrOrderItems = (req, res) => {
-  OrderItems.findAll((data) => res.json(data));
+  OrderItems.findAll((err, data) => {
+    if (err) return res.status(500).json(err);
+
+    return res.json(data);
+  });
 };
 
 const MerrOrderItemById = (req, res) => {

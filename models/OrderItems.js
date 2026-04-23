@@ -1,4 +1,4 @@
-const db = require('../database/database'); // 🔥 KJO DUHET ME QENË FIKS
+const db = require('../database/database'); 
 
 class OrderItems {
   constructor(id, order_id, menu_item_id, sasia, cmimi, shenimet) {
