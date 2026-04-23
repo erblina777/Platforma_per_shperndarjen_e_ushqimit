@@ -16,6 +16,8 @@ router.put('/:id',
   usersMiddleware.validateUser,
   usersController.NdryshoUser
 );
+router.patch('/:id/activate', usersController.AktivizoUser);
+router.patch('/:id/deactivate', usersController.DeaktivizoUser);
 
 router.delete('/:id', usersController.FshijUser);
 

@@ -59,11 +59,24 @@ const FshijUser = async (req, res) => {
     res.status(500).send("Server Error");
   }
 };
+const AktivizoUser = (req, res) => {
+  Users.ndryshoStatusin(req.params.id, "active", () => {
+    res.json({ message: "User u aktivizua" });
+  });
+};
+
+const DeaktivizoUser = (req, res) => {
+  Users.ndryshoStatusin(req.params.id, "inactive", () => {
+    res.json({ message: "User u deaktivizua" });
+  });
+};
 
 module.exports = {
   MerrUserat,
   MerrUserById,
   ShtoUser,
   NdryshoUser,
-  FshijUser
+  FshijUser,
+  AktivizoUser,
+  DeaktivizoUser
 };

@@ -1,18 +1,20 @@
 const connection = require('../database/database');
 
 class Users {
-  constructor(id, emri, email, password) {
+  constructor(id, emri, mbiemri, email, password_hash, status = "active") {
     this.id = id;
     this.emri = emri;
+    this.mbiemri = mbiemri;
     this.email = email;
-    this.password = password;
+    this.password_hash = password_hash;
+    this.status = status
   }
 
   static findAll(callback) {
     const query = "SELECT * FROM users";
     connection.query(query, (err, rows) => {
       if (err) throw err;
-      const users = rows.map(row => new Users(row.id, row.emri, row.email, row.password));
+      const users = rows.map(row => new Users(row.id, row.emri, row.mbiemri, row.email, row.password_hash, row.status));
       callback(users);
     });
   }
@@ -40,8 +42,8 @@ class Users {
   }
 
   static create(user, callback) {
-    const query = "INSERT INTO users (emri, email, password) VALUES (?, ?, ?)";
-    const values = [user.emri, user.email, user.password];
+    const query = "INSERT INTO users (emri, mbiemri, email, password_hash) VALUES (?, ?, ?, ?, ?)";
+    const values = [user.emri, user.mbiemri, user.email, user.password_hash, "active"];
 
     connection.query(query, values, (err, result) => {
       if (err) throw err;
@@ -52,8 +54,8 @@ class Users {
   }
 
   static update(user, callback) {
-    const query = "UPDATE users SET emri=?, email=?, password=? WHERE id=?";
-    const values = [user.emri, user.email, user.password, user.id];
+    const query = "UPDATE users SET emri=?, mbiemri=?, email=?, password_hash=?, status=? WHERE id=?";
+    const values = [user.emri, user.mbiemri , user.email, user.password_hash, user.status, user.id];
 
     connection.query(query, values, (err) => {
       if (err) throw err;
@@ -68,6 +70,13 @@ class Users {
       callback();
     });
   }
+  static ndryshoStatusin(id, status, callback) {
+  const query = "UPDATE Users SET status=? WHERE id=?";
+  connection.query(query, [status, id], (err) => {
+    if (err) throw err;
+    callback();
+  });
+}
 }
 
 module.exports = Users;
