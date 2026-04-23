@@ -11,7 +11,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // ROUTES
+
 const usersRoutes = require('./routes/users');
+<<<<<<< HEAD
+//const restaurantsRoutes = require('./routes/restaurants');
+//const ordersRoutes = require('./routes/orders');
+
+app.use('/users', usersRoutes);
+//app.use('/restaurants', restaurantsRoutes);
+//app.use('/orders', ordersRoutes);
+
+=======
 const restaurantsRoutes = require('./routes/restaurants');
 const menuCategoriesRoutes = require('./routes/menucategories');
 const ordersRoutes = require('./routes/orders');
@@ -22,6 +32,7 @@ app.use('/restaurants', restaurantsRoutes);
 app.use('/menucategories', menuCategoriesRoutes);
 app.use('/orders', ordersRoutes);
 app.use('/menuitems', menuItemsRoutes);
+>>>>>>> ade21737afe5f990933fcd5865c155c5e74951f0
 // Roles
 const rolesRoutes = require('./routes/roles');
 app.use('/roles', rolesRoutes);
@@ -42,12 +53,19 @@ app.use('/drivers', driversRoutes);
 const deliveriesRoutes = require('./routes/deliveries');
 app.use('/deliveries', deliveriesRoutes);
 
-// test route
-app.get('/', (req, res) => {
-  res.send('Food Delivery API po punon 🚀');
-});
+const reviewsRoutes = require('./routes/reviews');
 
-// start server
+app.use('/reviews', reviewsRoutes);
+app.use('/reviews', reviewsRoutes);
+
+// START SERVER
 app.listen(port, () => {
   console.log(`Serveri po punon në portin ${port}`);
 });
+const addressesRoutes = require('./routes/addresses');
+
+app.use('/addresses', addressesRoutes);
+
+const promotionsRoutes = require('./routes/promotions');
+
+app.use('/promotions', promotionsRoutes);
