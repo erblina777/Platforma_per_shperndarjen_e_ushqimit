@@ -1,18 +1,10 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
+const controller = require('../controllers/addresses');
 
-const {
-  MerrAddresses,
-  MerrAddressById,
-  ShtoAddress,
-  NdryshoAddress,
-  FshijAddress
-} = require('../controllers/addresses');
-
-router.get('/', MerrAddresses);
-router.get('/:id', MerrAddressById);
-router.post('/', ShtoAddress);
-router.put('/:id', NdryshoAddress);
-router.delete('/:id', FshijAddress);
+router.get('/', controller.MerrAddresses);
+router.get('/:id', controller.MerrAddressById);
+router.post('/', controller.ShtoAddress);
+router.put('/:id', controller.NdryshoAddress);
+router.delete('/:id', controller.FshijAddress);
 
 module.exports = router;

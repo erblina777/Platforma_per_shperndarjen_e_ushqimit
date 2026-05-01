@@ -1,27 +1,10 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
+const controller = require('../controllers/promotions');
 
-const {
-  MerrPromotions,
-  MerrPromotionById,
-  ShtoPromotion,
-  NdryshoPromotion,
-  FshijPromotion
-} = require('../controllers/promotions');
-
-// GET all
-router.get('/', MerrPromotions);
-
-// GET by id
-router.get('/:id', MerrPromotionById);
-
-// POST
-router.post('/', ShtoPromotion);
-
-// PUT
-router.put('/:id', NdryshoPromotion);
-
-// DELETE
-router.delete('/:id', FshijPromotion);
+router.get('/', controller.MerrPromotions);
+router.get('/:id', controller.MerrPromotionById);
+router.post('/', controller.ShtoPromotion);
+router.put('/:id', controller.NdryshoPromotion);
+router.delete('/:id', controller.FshijPromotion);
 
 module.exports = router;
