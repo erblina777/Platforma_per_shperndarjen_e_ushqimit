@@ -15,8 +15,8 @@ export default function App() {
 
   const fields = {
     restaurants: ["emertimi", "pershkrimi", "adresa", "qyteti"],
+    menuitems: ["category_id", "emertimi", "cmimi"],
     orders: ["user_id", "restaurant_id", "total", "status"],
-    deliveries: ["order_id", "driver_id", "status"],
     menucategories: ["emertimi", "pershkrimi"]
   };
 
