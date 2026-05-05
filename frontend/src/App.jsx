@@ -14,6 +14,9 @@ export default function App() {
   const [editId, setEditId] = useState(null);
 
   const fields = {
+    users: ["emri", "mbiemri", "email", "password"],
+    roles: ["emertimi", "pershkrimi"],
+    userroles: ["user_id", "role_id"],
     restaurants: ["emertimi", "pershkrimi", "adresa", "qyteti"],
     orders: ["user_id", "restaurant_id", "total", "status"],
     deliveries: ["order_id", "driver_id", "status"],
@@ -21,6 +24,20 @@ export default function App() {
   };
 
   const placeholders = {
+    users: {
+      emri: "emri",
+      mbiemri: "mbiemri",
+      email: "email",
+      password: "min 6 karaktere"
+    },
+     roles: {
+      emertimi: "p.sh. Admin",
+      pershkrimi: "p.sh. Roli"
+    },
+    userroles: {
+    user_id: "p.sh. 1",
+    role_id: "p.sh. 2"
+    },
     restaurants: {
       emertimi: "p.sh. Restaurant Freskia",
       pershkrimi: "p.sh. Restoranti Freskia në Gërmi ofron...",
