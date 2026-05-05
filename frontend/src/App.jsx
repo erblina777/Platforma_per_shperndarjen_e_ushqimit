@@ -20,7 +20,10 @@ export default function App() {
     restaurants: ["emertimi", "pershkrimi", "adresa", "qyteti"],
     menuitems: ["category_id", "emertimi", "cmimi"],
     orders: ["user_id", "restaurant_id", "total", "status"],
-    menucategories: ["emertimi", "pershkrimi"]
+    menucategories: ["emertimi", "pershkrimi"],
+    orderitems:["order_id", "menuitem_id","quantity"],
+    drivers:["emri","telefoni","status"],
+    deliveries:["order_id","driver_id","status"]
   };
 
   const placeholders = {
@@ -58,7 +61,22 @@ export default function App() {
     menucategories: {
       emertimi: "p.sh. Drinks",
       pershkrimi: "p.sh. Pije"
-    }
+    },
+    orderitems: {
+      order_id: "p.sh. 1",
+      menuitem_id: "p.sh. 2",
+      quantity: "p.sh. 3"
+    },
+    drivers: {
+      emri: "p.sh. Dren",
+      telefoni: "p.sh. 044123456",
+      status: "active / inactive"
+    },
+    deliveries: {
+      order_id: "p.sh. 1",
+      driver_id: "p.sh. 2",
+      status: "delivering / delivered"
+    },
   };
 
   const loadData = async () => {
