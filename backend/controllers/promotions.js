@@ -1,46 +1,55 @@
 const Promotions = require('../models/promotions');
 
-// GET all
+
 const MerrPromotions = (req, res) => {
-  res.json([]);
+  Promotions.findAll((data) => res.json(data));
 };
 
 // GET by id
 const MerrPromotionById = (req, res) => {
-  res.json({});
+  Promotions.findById(req.params.id, (data) => {
+    if (!data) return res.status(404).send("Promotion nuk u gjet");
+    res.json(data);
+  });
 };
 
-// POST
+
 const ShtoPromotion = (req, res) => {
   const promotion = new Promotions(
     null,
-    req.body.title,
-    req.body.description,
-    req.body.discount,
-    req.body.start_date,
-    req.body.end_date
+    req.body.restaurant_id,
+    req.body.kodi,
+    req.body.zbritja_perqind,
+    req.body.zbritja_max,
+    req.body.data_fillimit,
+    req.body.data_perfundimit,
+    req.body.statusi
   );
 
-  res.status(201).json(promotion);
+  Promotions.create(promotion, (data) => res.status(201).json(data));
 };
 
-// PUT
+
 const NdryshoPromotion = (req, res) => {
   const promotion = new Promotions(
     req.params.id,
-    req.body.title,
-    req.body.description,
-    req.body.discount,
-    req.body.start_date,
-    req.body.end_date
+    req.body.restaurant_id,
+    req.body.kodi,
+    req.body.zbritja_perqind,
+    req.body.zbritja_max,
+    req.body.data_fillimit,
+    req.body.data_perfundimit,
+    req.body.statusi
   );
 
-  res.json(promotion);
+  Promotions.update(promotion, (data) => res.json(data));
 };
 
-// DELETE
+
 const FshijPromotion = (req, res) => {
-  res.json({ message: "Promotion u fshi me sukses" });
+  Promotions.deleteById(req.params.id, () => {
+    res.json({ message: "Promotion u fshi me sukses" });
+  });
 };
 
 module.exports = {

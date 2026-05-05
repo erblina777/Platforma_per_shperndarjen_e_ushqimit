@@ -1,3 +1,5 @@
+const connection = require('../database/database');
+
 class Reviews {
   constructor(id, order_id, user_id, restaurant_id, vleresimi, komenti) {
     this.id = id;
@@ -9,23 +11,67 @@ class Reviews {
   }
 
   static findAll(callback) {
-    callback([]);
+    connection.query("SELECT * FROM reviews", (err, rows) => {
+      if (err) throw err;
+      callback(rows);
+    });
   }
 
   static findById(id, callback) {
-    callback(null);
+    connection.query("SELECT * FROM reviews WHERE id=?", [id], (err, rows) => {
+      if (err) throw err;
+      callback(rows[0]);
+    });
   }
 
   static create(review, callback) {
-    callback(review);
+    connection.query(
+      `INSERT INTO reviews 
+      (order_id, user_id, restaurant_id, vleresimi, komenti) 
+      VALUES (?, ?, ?, ?, ?)`,
+      [
+        review.order_id,
+        review.user_id,
+        review.restaurant_id,
+        review.vleresimi,
+        review.komenti
+      ],
+      (err, result) => {
+        if (err) throw err;
+        callback({ id: result.insertId, ...review });
+      }
+    );
   }
 
   static update(review, callback) {
-    callback(review);
+    connection.query(
+      `UPDATE reviews 
+       SET order_id=?, user_id=?, restaurant_id=?, vleresimi=?, komenti=? 
+       WHERE id=?`,
+      [
+        review.order_id,
+        review.user_id,
+        review.restaurant_id,
+        review.vleresimi,
+        review.komenti,
+        review.id
+      ],
+      (err) => {
+        if (err) throw err;
+        callback(review);
+      }
+    );
   }
 
   static deleteById(id, callback) {
-    callback();
+    connection.query(
+      "DELETE FROM reviews WHERE id=?",
+      [id],
+      (err) => {
+        if (err) throw err;
+        callback();
+      }
+    );
   }
 }
 

@@ -43,19 +43,19 @@ app.use('/drivers', driversRoutes);
 const deliveriesRoutes = require('./routes/deliveries');
 app.use('/deliveries', deliveriesRoutes);
 
+//Reviews
 const reviewsRoutes = require('./routes/reviews');
+app.use('/reviews', reviewsRoutes);
 
-app.use('/reviews', reviewsRoutes);
-app.use('/reviews', reviewsRoutes);
+ //ADDRESSES 
+const addressesRoutes = require('./routes/addresses');
+app.use('/addresses', addressesRoutes);
+
+//  PROMOTIONS 
+const promotionsRoutes = require('./routes/promotions');
+app.use('/promotions', promotionsRoutes);
 
 // START SERVER
 app.listen(port, () => {
   console.log(`Serveri po punon në portin ${port}`);
 });
-const addressesRoutes = require('./routes/addresses');
-
-app.use('/addresses', addressesRoutes);
-
-const promotionsRoutes = require('./routes/promotions');
-
-app.use('/promotions', promotionsRoutes);

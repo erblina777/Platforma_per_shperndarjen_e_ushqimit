@@ -1,46 +1,48 @@
-const Addresses = require('../models/addresses');
+const Address = require('../models/addresses');
 
-// GET all addresses
 const MerrAddresses = (req, res) => {
-  res.json([]);
+  Address.findAll((data) => res.json(data));
 };
 
-// GET address by ID
 const MerrAddressById = (req, res) => {
-  res.json({});
+  Address.findById(req.params.id, (data) => {
+    if (!data) return res.status(404).send("Adresa nuk u gjet");
+    res.json(data);
+  });
 };
 
-// CREATE address
 const ShtoAddress = (req, res) => {
-  const adresa = new Addresses(
+  const address = new Address(
     null,
     req.body.user_id,
     req.body.emertimi,
     req.body.adresa,
     req.body.qyteti,
-    req.body.koordinatat
+    req.body.koordinatat,
+    req.body.eshte_kryesore
   );
 
-  res.status(201).json(adresa);
+  Address.create(address, (data) => res.status(201).json(data));
 };
 
-// UPDATE address
 const NdryshoAddress = (req, res) => {
-  const adresa = new Addresses(
+  const address = new Address(
     req.params.id,
     req.body.user_id,
     req.body.emertimi,
     req.body.adresa,
     req.body.qyteti,
-    req.body.koordinatat
+    req.body.koordinatat,
+    req.body.eshte_kryesore
   );
 
-  res.json(adresa);
+  Address.update(address, (data) => res.json(data));
 };
 
-// DELETE address
 const FshijAddress = (req, res) => {
-  res.json({ message: "Adresa u fshi me sukses" });
+  Address.deleteById(req.params.id, () => {
+    res.json({ message: "Adresa u fshi me sukses" });
+  });
 };
 
 module.exports = {
