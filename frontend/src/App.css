@@ -1,0 +1,187 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: #0f172a;
+}
+
+.container {
+  padding: 30px;
+  color: white;
+}
+
+.title {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+/* MENU */
+.menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.menu button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  background: #1e293b;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.menu button.active {
+  background: #2563eb;
+}
+
+/* ADD */
+.add-btn {
+  background: #16a34a;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+
+/* TABLE */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #1e293b;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table th {
+  background: #334155;
+  padding: 12px;
+}
+
+.table td {
+  padding: 10px;
+  text-align: center;
+}
+
+.table tr:nth-child(even) {
+  background: #0f172a;
+}
+
+/* BUTTONS */
+.edit-btn {
+  background: #3b82f6;
+  border: none;
+  padding: 6px 10px;
+  margin-right: 5px;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete-btn {
+  background: #ef4444;
+  border: none;
+  padding: 6px 10px;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* MODAL */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* FORM */
+.form {
+  background: white;
+  color: black;
+  padding: 25px;
+  border-radius: 12px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form input {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.save-btn {
+  background: #16a34a;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background: #64748b;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+/* LOGO WRAPPER */
+.logo-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 30px;
+}
+
+/* LOGO */
+.logo {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+
+  border-radius: 14px;
+
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45);
+}
+
+/* TITULLI */
+.dashboard-header h1 {
+  font-size: 26px;
+  font-weight: 600;
+  color: #f8fafc;
+}
