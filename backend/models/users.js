@@ -42,17 +42,26 @@ class Users {
   }
 
   static create(user, callback) {
-    const query = "INSERT INTO users (emri, mbiemri, email, password_hash, status) VALUES (?, ?, ?, ?, ?)";
-    const values = [user.emri, user.mbiemri, user.email, user.password_hash, "active"];
+  const query =
+    "INSERT INTO users (emri, mbiemri, email, password_hash, status) VALUES (?, ?, ?, ?, ?)";
 
-    connection.query(query, values, (err, result) => {
-      if (err) throw err;
+  const values = [
+    user.emri,
+    user.mbiemri,
+    user.email,
+    user.password_hash,
+    user.status,
+  ];
 
-      const newUser = new Users(result.insertId, user.emri, user.email, user.password);
-      callback(newUser);
+  connection.query(query, values, (err, result) => {
+    if (err) throw err;
+
+    callback({
+      id: result.insertId,
+      ...user,
     });
-  }
-
+  });
+}
   static update(user, callback) {
     const query = "UPDATE users SET emri=?, mbiemri=?, email=?, password_hash=?, status=? WHERE id=?";
     const values = [user.emri, user.mbiemri , user.email, user.password_hash, user.status, user.id];

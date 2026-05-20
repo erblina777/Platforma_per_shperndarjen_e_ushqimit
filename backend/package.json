@@ -19,10 +19,12 @@
   },
   "homepage": "https://github.com/erblina777/Platforma_per_shperndarjen_e_ushqimit#readme",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "body-parser": "^2.2.2",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
     "mysql": "^2.18.1"
   }
 }

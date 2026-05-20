@@ -17,12 +17,14 @@ const restaurantsRoutes = require('./routes/restaurants');
 const menuCategoriesRoutes = require('./routes/menucategories');
 const ordersRoutes = require('./routes/orders');
 const menuItemsRoutes = require('./routes/menuitems');
+const authRoutes = require("./routes/auth");
 
 app.use('/users', usersRoutes);
 app.use('/restaurants', restaurantsRoutes);
 app.use('/menucategories', menuCategoriesRoutes);
 app.use('/orders', ordersRoutes);
 app.use('/menuitems', menuItemsRoutes);
+app.use("/auth", authRoutes);
 // Roles
 const rolesRoutes = require('./routes/roles');
 app.use('/roles', rolesRoutes);
