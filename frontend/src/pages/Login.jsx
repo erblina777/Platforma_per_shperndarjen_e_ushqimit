@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import "../login-register.css";
 
 function Login() {
   const [formData, setFormData] =
@@ -41,10 +42,19 @@ function Login() {
   };
 
   return (
-    <div>
-      <h1>Login</h1>
+  <div className="auth-container">
 
-      <form onSubmit={handleSubmit}>
+    <div className="auth-box">
+
+      <h1 className="auth-title">
+        Login
+      </h1>
+
+      <form
+        className="auth-form"
+        onSubmit={handleSubmit}
+      >
+
         <input
           type="email"
           name="email"
@@ -59,16 +69,27 @@ function Login() {
           onChange={handleChange}
         />
 
-        <button type="submit">
+        <button
+          className="auth-btn"
+          type="submit"
+        >
           Login
         </button>
+
       </form>
 
-      <Link to="/register">
-        Register
-      </Link>
+      <div className="auth-footer">
+        Nuk keni llogari?{" "}
+
+        <Link to="/register">
+          Regjistrohu.
+        </Link>
+      </div>
+
     </div>
-  );
+
+  </div>
+);
 }
 
 export default Login;
