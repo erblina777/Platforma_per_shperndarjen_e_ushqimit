@@ -1,20 +1,20 @@
 import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../login-register.css";
 
 function Login() {
-  const [formData, setFormData] =
-    useState({
-      email: "",
-      password: "",
-    });
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]:
-        e.target.value,
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -22,74 +22,69 @@ function Login() {
     e.preventDefault();
 
     try {
-      const res =
-        await axios.post(
-          "http://localhost:3000/auth/login",
-          formData
-        );
-
-      localStorage.setItem(
-        "token",
-        res.data.token
+      const res = await axios.post(
+        "http://localhost:3000/auth/login",
+        formData
       );
 
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
       alert("Login successful");
+
+      const role = res.data.user.role?.toLowerCase();
+      
+      if (role === "owner") {
+        navigate("/restaurant-dashboard");
+      } 
+      else if (role === "admin") {
+        navigate("/admin-dashboard");
+      } 
+      else if (role === "driver") {
+        navigate("/driver-dashboard");
+      } 
+      else {
+        navigate("/");
+      }
+
     } catch (err) {
       console.log(err);
-
-      alert("Gabim");
+      alert("Gabim login");
     }
   };
 
   return (
-  <div className="auth-container">
+    <div className="auth-container">
+      <div className="auth-box">
+        <h1 className="auth-title">Login</h1>
 
-    <div className="auth-box">
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            onChange={handleChange}
+          />
 
-      <h1 className="auth-title">
-        Login
-      </h1>
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            onChange={handleChange}
+          />
 
-      <form
-        className="auth-form"
-        onSubmit={handleSubmit}
-      >
+          <button className="auth-btn" type="submit">
+            Login
+          </button>
+        </form>
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          onChange={handleChange}
-        />
-
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={handleChange}
-        />
-
-        <button
-          className="auth-btn"
-          type="submit"
-        >
-          Login
-        </button>
-
-      </form>
-
-      <div className="auth-footer">
-        Nuk keni llogari?{" "}
-
-        <Link to="/register">
-          Regjistrohu.
-        </Link>
+        <div className="auth-footer">
+          Nuk keni llogari?{" "}
+          <Link to="/register">Regjistrohu.</Link>
+        </div>
       </div>
-
     </div>
-
-  </div>
-);
+  );
 }
 
 export default Login;
