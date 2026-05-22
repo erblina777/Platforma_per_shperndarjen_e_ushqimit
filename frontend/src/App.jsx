@@ -7,6 +7,7 @@ import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import RestaurantDashboard from "./pages/RestaurantDashboard";
+import DriverDashboard from "./pages/DriverDashboard";
 import ProtectedRoute from "./ProtectedRoute";
 
 export default function App() {
@@ -26,7 +27,16 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+         <Route
+          path="/driver-dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["Driver"]}>
+              <DriverDashboard />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
+      
       <Footer />
 
     </BrowserRouter>
