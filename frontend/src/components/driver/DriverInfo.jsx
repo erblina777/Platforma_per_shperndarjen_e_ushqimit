@@ -6,9 +6,11 @@ export default function DriverInfo() {
 
   const [driver, setDriver] = useState(null);
 
-  useEffect(() => {
+   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+
     axios
-      .get("http://localhost:3000/drivers/1")
+      .get(`http://localhost:3000/drivers/${user.id}`)
       .then((res) => setDriver(res.data))
       .catch(console.error);
   }, []);
