@@ -28,12 +28,11 @@ function Login() {
       );
 
       localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
+      localStorage.setItem("user", JSON.stringify({...res.data.user, role: res.data.user.role?.toLowerCase()}));
 
       alert("Login successful");
-
-      const role = res.data.user.role?.toLowerCase();
-      
+      const role = res.data.user?.role?.trim()?.toLowerCase();
+      console.log("ROLE FROM BACKEND:", res.data.user.role);
       if (role === "owner") {
         navigate("/restaurant-dashboard");
       } 

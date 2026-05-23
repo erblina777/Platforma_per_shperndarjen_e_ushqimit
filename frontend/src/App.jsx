@@ -22,7 +22,7 @@ export default function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/restaurant-dashboard"
           element={
-            <ProtectedRoute allowedRoles={["Owner"]}>
+            <ProtectedRoute allowedRoles={["owner"]}>
               <RestaurantDashboard />
             </ProtectedRoute>
           }
@@ -30,7 +30,7 @@ export default function App() {
          <Route
           path="/driver-dashboard"
           element={
-            <ProtectedRoute allowedRoles={["Driver"]}>
+            <ProtectedRoute allowedRoles={["driver"]}>
               <DriverDashboard />
             </ProtectedRoute>
           }

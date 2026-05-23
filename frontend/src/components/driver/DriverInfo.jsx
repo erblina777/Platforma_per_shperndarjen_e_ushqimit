@@ -8,7 +8,7 @@ export default function DriverInfo() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/deliverydrivers/1")
+      .get("http://localhost:3000/drivers/1")
       .then((res) => setDriver(res.data))
       .catch(console.error);
   }, []);

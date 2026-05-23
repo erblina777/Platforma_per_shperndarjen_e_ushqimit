@@ -33,9 +33,20 @@ class Users {
 
   static findByEmail(email) {
     return new Promise((resolve, reject) => {
-      const query = "SELECT * FROM users WHERE email=?";
+      const query = `
+        SELECT
+          u.*,
+          r.emertimi AS role
+        FROM users u
+        LEFT JOIN userroles ur
+          ON ur.user_id = u.id
+        LEFT JOIN roles r
+          ON r.id = ur.role_id
+        WHERE u.email = ?
+      `;
+
       connection.query(query, [email], (err, rows) => {
-        if (err) reject(err);
+        if (err) return reject(err);
         resolve(rows);
       });
     });

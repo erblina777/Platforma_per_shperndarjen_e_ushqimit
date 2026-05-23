@@ -3,5 +3,5 @@ export const getUser = () => {
 };
 
 export const getRole = () => {
-  return getUser()?.role;
+  return getUser()?.role?.toLowerCase();
 };

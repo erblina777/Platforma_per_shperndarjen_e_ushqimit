@@ -1,14 +1,12 @@
-import { Navigate } from "react-router-dom";
 import { getRole } from "./auth";
-
 export default function ProtectedRoute({ children, allowedRoles }) {
-  const role = getRole();
+  const role = getRole()?.trim()?.toLowerCase();
 
-  if (!role) {
-    return <Navigate to="/login" />;
-  }
+  if (!role) return <Navigate to="/login" />;
 
-  if (!allowedRoles.includes(role)) {
+  const allowed = allowedRoles.map(r => r.toLowerCase());
+
+  if (!allowed.includes(role)) {
     return <Navigate to="/" />;
   }
 
