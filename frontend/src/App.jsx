@@ -9,7 +9,7 @@ import Register from "./pages/Register.jsx";
 import RestaurantDashboard from "./pages/RestaurantDashboard";
 import DriverDashboard from "./pages/DriverDashboard";
 import ProtectedRoute from "./ProtectedRoute";
-
+import AdminDashboard from "./pages/AdminDashboard";
 export default function App() {
   return (
     <BrowserRouter>
@@ -35,6 +35,14 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+  <Route
+  path="/admin-dashboard"
+  element={
+    <ProtectedRoute allowedRoles={["admin"]}>
+      <AdminDashboard />
+    </ProtectedRoute>
+  }
+/>
       </Routes>
       
       <Footer />
