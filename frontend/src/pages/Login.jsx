@@ -32,8 +32,10 @@ function Login() {
 
       alert("Login successful");
       const role = res.data.user?.role?.trim()?.toLowerCase();
-      console.log("ROLE FROM BACKEND:", res.data.user.role);
+      const user = res.data.user;
       if (role === "owner") {
+        const restaurantRes = await axios.get(`http://localhost:3000/restaurants/user/${user.id}`);
+        localStorage.setItem("restaurant", JSON.stringify(restaurantRes.data));
         navigate("/restaurant-dashboard");
       } 
       else if (role === "admin") {

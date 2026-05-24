@@ -2,6 +2,7 @@ const router = require('express').Router();
 const ctrl = require('../controllers/restaurants');
 
 router.get('/', ctrl.getAll);
+router.get('/user/:id', ctrl.getByUserId);
 router.get('/:id', ctrl.getById);
 router.post('/', ctrl.create);
 router.put('/:id', ctrl.update);

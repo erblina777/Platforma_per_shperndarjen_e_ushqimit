@@ -7,6 +7,34 @@ class Orders {
       cb(rows);
     });
   }
+  static getByRestaurantIdDetailed(id, cb) {
+    const q = `
+      SELECT 
+        o.id,
+        o.statusi,
+        o.shuma_totale,
+        o.user_id,
+        o.restaurant_id,
+        o.data_porosise,
+
+        oi.menu_item_id,
+        oi.sasia,
+        oi.cmimi,
+
+        mi.emertimi AS item_name,
+        mi.cmimi AS item_price
+
+      FROM orders o
+      LEFT JOIN orderitems oi ON o.id = oi.order_id
+      LEFT JOIN menuitems mi ON mi.id = oi.menu_item_id
+      WHERE o.restaurant_id = ?
+    `;
+
+    connection.query(q, [id], (err, rows) => {
+      if (err) return cb(err);
+      cb(null, rows);
+    });
+  }
 
   static findById(id, cb) {
     connection.query("SELECT * FROM orders WHERE id=?", [id], (err, rows) => {

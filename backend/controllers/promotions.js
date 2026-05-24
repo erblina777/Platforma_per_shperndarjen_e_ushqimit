@@ -4,8 +4,14 @@ const Promotions = require('../models/promotions');
 const MerrPromotions = (req, res) => {
   Promotions.findAll((data) => res.json(data));
 };
+const getByRestaurantId = (req, res) => {
+  const id = req.params.id;
 
-// GET by id
+  Promotions.findByRestaurantId(id, (rows) => {
+    res.json(rows);
+  });
+};
+
 const MerrPromotionById = (req, res) => {
   Promotions.findById(req.params.id, (data) => {
     if (!data) return res.status(404).send("Promotion nuk u gjet");
@@ -54,8 +60,9 @@ const FshijPromotion = (req, res) => {
 
 module.exports = {
   MerrPromotions,
+  getByRestaurantId,
   MerrPromotionById,
   ShtoPromotion,
   NdryshoPromotion,
-  FshijPromotion
+  FshijPromotion,
 };

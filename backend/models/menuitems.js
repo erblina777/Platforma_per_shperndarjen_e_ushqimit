@@ -7,7 +7,21 @@ class MenuItems {
       cb(rows);
     });
   }
-
+  static findByRestaurantId(restaurantId, cb) {
+    connection.query(
+      `
+      SELECT mi.*
+      FROM MenuItems mi
+      JOIN MenuCategories mc ON mi.category_id = mc.id
+      WHERE mc.restaurant_id = ?
+      `,
+      [restaurantId],
+      (err, rows) => {
+        if (err) throw err;
+        cb(rows);
+      }
+    );
+  }
   static findById(id, cb) {
     connection.query("SELECT * FROM menuitems WHERE id=?", [id], (err, rows) => {
       if (err) throw err;

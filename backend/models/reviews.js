@@ -16,6 +16,18 @@ class Reviews {
       callback(rows);
     });
   }
+  static getByRestaurantId(id) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT * FROM reviews WHERE restaurant_id = ?",
+        [id],
+        (err, rows) => {
+          if (err) reject(err);
+          else resolve(rows);
+        }
+      );
+    });
+  }
 
   static findById(id, callback) {
     connection.query("SELECT * FROM reviews WHERE id=?", [id], (err, rows) => {

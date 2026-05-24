@@ -1,51 +1,30 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import useRestaurant from "../../hooks/useRestaurant";
 
-export default function RestaurantInfo() {
+export default function RestaurantInfo({ restaurant }) {
 
-  const [restaurant, setRestaurant] = useState(null);
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/restaurants/1")
-      .then((res) => setRestaurant(res.data))
-      .catch(console.error);
-  }, []);
-
-  if (!restaurant) return null;
+  if (!restaurant) return <p>Loading...</p>;
 
   return (
     <section className="dashboard-section">
-
       <h2>Restaurant Information</h2>
 
       <div className="restaurant-box">
-
         <img
-          src={`/images/restaurants/${restaurant.logo}`}
+          src={`http://localhost:3000/uploads/${restaurant.logo}`}
           alt={restaurant.emertimi}
         />
 
         <div>
-
           <h3>{restaurant.emertimi}</h3>
-
           <p>{restaurant.adresa}</p>
-
           <p>
-            {restaurant.orari_hapjes}
-            -
-            {restaurant.orari_mbylljes}
+            {restaurant.orari_hapjes} - {restaurant.orari_mbylljes}
           </p>
 
-          <span className="status-badge">
-            {restaurant.status}
-          </span>
-
+          <span>{restaurant.status}</span>
         </div>
-
       </div>
-
     </section>
   );
 }

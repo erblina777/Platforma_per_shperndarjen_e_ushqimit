@@ -1,89 +1,111 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function OrdersSection() {
-
+export default function OrdersSection({ restaurant }) {
   const [orders, setOrders] = useState([]);
+  const [editId, setEditId] = useState(null);
+  const [newStatus, setNewStatus] = useState("");
 
   useEffect(() => {
-    loadOrders();
-  }, []);
+    if (!restaurant?.id) return;
 
-  const loadOrders = () => {
     axios
-      .get("http://localhost:3000/orders")
-      .then((res) => setOrders(res.data));
-  };
+      .get(`http://localhost:3000/orders/restaurant/${restaurant.id}`)
+      .then((res) => setOrders(res.data))
+      .catch((err) => console.error(err));
+  }, [restaurant?.id]);
 
   const updateStatus = async (id, statusi) => {
+    await axios.put(`http://localhost:3000/orders/${id}`, { statusi });
 
-    await axios.put(
-      `http://localhost:3000/orders/${id}`,
-      { statusi }
+    const res = await axios.get(
+      `http://localhost:3000/orders/restaurant/${restaurant.id}`
     );
 
-    loadOrders();
+    setOrders(res.data);
   };
+
+  const startEdit = (order) => {
+    setEditId(order.id);
+    setNewStatus(order.statusi);
+  };
+
+  const saveEdit = async (id) => {
+    await updateStatus(id, newStatus);
+    setEditId(null);
+    setNewStatus("");
+  };
+
+  if (!restaurant) return <p>Loading...</p>;
+
+  const grouped = orders.reduce((acc, item) => {
+    if (!acc[item.id]) {
+      acc[item.id] = {
+        id: item.id,
+        statusi: item.statusi,
+        shuma_totale: item.shuma_totale,
+        items: [],
+      };
+    }
+
+    if (item.item_name) {
+      acc[item.id].items.push({
+        name: item.item_name,
+        price: item.item_price,
+        sasia: item.sasia,
+      });
+    }
+
+    return acc;
+  }, {});
 
   return (
     <section className="dashboard-section">
-
       <h2>Orders</h2>
 
       <div className="orders-grid">
+        {Object.values(grouped).map((o) => (
+          <div className="order-card" key={o.id}>
+            <h3>Order #{o.id}</h3>
 
-        {orders.map(order => (
+            <p><b>Status:</b> {o.statusi}</p>
+            <p><b>Total:</b> €{o.shuma_totale}</p>
 
-          <div className="order-card" key={order.id}>
+            {/* ITEMS */}
+            <h4>Items:</h4>
+            <ul>
+              {o.items.map((i, index) => (
+                <li key={index}>
+                  {i.name} - €{i.price} x {i.sasia}
+                </li>
+              ))}
+            </ul>
 
-            <h3>Order #{order.id}</h3>
+            {/* EDIT SECTION */}
+            {editId === o.id ? (
+              <div className="buttons">
+                <select
+                  value={newStatus}
+                  onChange={(e) => setNewStatus(e.target.value)}
+                >
+                  <option value="Pending">Pending</option>
+                  <option value="Preparing">Preparing</option>
+                  <option value="Accepted">Accepted</option>
+                  <option value="Delivered">Delivered</option>
+                  <option value="Rejected">Rejected</option>
+                </select>
 
-            <p>Status: {order.statusi}</p>
-
-            <p>Total: €{order.shuma_totale}</p>
-
-            <div className="buttons">
-
-              <button
-                onClick={() =>
-                  updateStatus(order.id,"Accepted")
-                }
-              >
-                Accept
-              </button>
-
-              <button
-                onClick={() =>
-                  updateStatus(order.id,"Rejected")
-                }
-              >
-                Reject
-              </button>
-
-              <button
-                onClick={() =>
-                  updateStatus(order.id,"Preparing")
-                }
-              >
-                Preparing
-              </button>
-
-              <button
-                onClick={() =>
-                  updateStatus(order.id,"Delivered")
-                }
-              >
-                Delivered
-              </button>
-
-            </div>
-
+                <button onClick={() => saveEdit(o.id)}>Save</button>
+                <button onClick={() => setEditId(null)}>Cancel</button>
+              </div>
+            ) : (
+              <div className="buttons">
+                <button onClick={() => startEdit(o)}>Edit</button>
+              </div>
+            )}
           </div>
-
         ))}
-
       </div>
-
     </section>
   );
 }

@@ -7,7 +7,14 @@ exports.getAll = (req, res) => {
 exports.getById = (req, res) => {
   Restaurants.findById(req.params.id, data => res.json(data));
 };
-
+exports.getByUserId = (req, res) => {
+  Restaurants.findByUserId(req.params.id, (data) => {
+    if (!data) {
+      return res.status(404).json({ message: "No restaurant found" });
+    }
+    res.json(data);
+  });
+};
 exports.create = (req, res) => {
   Restaurants.create(req.body, data => res.status(201).json(data));
 };

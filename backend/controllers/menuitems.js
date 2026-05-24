@@ -3,17 +3,47 @@ const MenuItems = require('../models/menuitems');
 exports.getAll = (req, res) => {
   MenuItems.findAll(data => res.json(data));
 };
-
+exports.getByRestaurantId = (req, res) => {
+  MenuItems.findByRestaurantId(
+    req.params.restaurantId,
+    (data) => res.json(data)
+  );
+};
 exports.getById = (req, res) => {
   MenuItems.findById(req.params.id, data => res.json(data));
 };
 
 exports.create = (req, res) => {
-  MenuItems.create(req.body, data => res.status(201).json(data));
+  const body = req.body;
+
+  const foto = req.file
+    ? req.file.filename
+    : null;
+
+  const data = {
+    ...body,
+    foto,
+  };
+
+  MenuItems.create(data, (result) => {
+    res.status(201).json(result);
+  });
 };
 
 exports.update = (req, res) => {
-  MenuItems.update(req.params.id, req.body, data => res.json(data));
+  const body = req.body;
+
+  if (req.file) {
+    body.foto = req.file.filename;
+  }
+
+  MenuItems.update(
+    req.params.id,
+    body,
+    (result) => {
+      res.json(result);
+    }
+  );
 };
 
 exports.delete = (req, res) => {
