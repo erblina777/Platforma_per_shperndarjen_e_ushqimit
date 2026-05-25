@@ -2,6 +2,7 @@ const router = require('express').Router();
 const ctrl = require('../controllers/menucategories');
 
 router.get('/', ctrl.getAll);
+router.get("/restaurant/:id", ctrl.getByRestaurantId);
 router.get('/:id', ctrl.getById);
 router.post('/', ctrl.create);
 router.put('/:id', ctrl.update);

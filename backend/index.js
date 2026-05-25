@@ -25,6 +25,7 @@ app.use('/menucategories', menuCategoriesRoutes);
 app.use('/orders', ordersRoutes);
 app.use('/menuitems', menuItemsRoutes);
 app.use("/auth", authRoutes);
+app.use("/uploads", express.static("uploads"));
 // Roles
 const rolesRoutes = require('./routes/roles');
 app.use('/roles', rolesRoutes);

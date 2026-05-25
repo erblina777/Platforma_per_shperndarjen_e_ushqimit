@@ -3,7 +3,17 @@ const Reviews = require('../models/reviews');
 const MerrReviews = (req, res) => {
   Reviews.findAll((data) => res.json(data));
 };
+const getByRestaurantId = async (req, res) => {
+  try {
+    const reviews = await Reviews.getByRestaurantId(
+      req.params.restaurantId
+    );
 
+    res.json(reviews);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
 const MerrReviewById = (req, res) => {
   Reviews.findById(req.params.id, (data) => {
     if (!data) return res.status(404).send("Review nuk u gjet");
@@ -45,6 +55,7 @@ const FshijReview = (req, res) => {
 
 module.exports = {
   MerrReviews,
+  getByRestaurantId,
   MerrReviewById,
   ShtoReview,
   NdryshoReview,

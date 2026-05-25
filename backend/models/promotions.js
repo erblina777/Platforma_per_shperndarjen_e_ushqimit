@@ -27,7 +27,16 @@ class Promotions {
       callback(rows);
     });
   }
-
+  static findByRestaurantId(restaurantId, callback) {
+    connection.query(
+      "SELECT * FROM promotions WHERE restaurant_id = ?",
+      [restaurantId],
+      (err, rows) => {
+        if (err) throw err;
+        callback(rows);
+      }
+    );
+  }
   static findById(id, callback) {
     connection.query("SELECT * FROM promotions WHERE id=?", [id], (err, rows) => {
       if (err) throw err;

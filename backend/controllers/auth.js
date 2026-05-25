@@ -52,7 +52,7 @@ const Login = async (req, res) => {
     }
 
     const user = result[0];
-
+    console.log(user);
     const isMatch = await bcrypt.compare(
       password,
       user.password_hash
@@ -68,6 +68,7 @@ const Login = async (req, res) => {
       {
         id: user.id,
         email: user.email,
+        role: user.role,
       },
       "SECRETKEY",
       {
@@ -78,7 +79,12 @@ const Login = async (req, res) => {
     res.json({
       message: "Login successful",
       token,
-      user,
+      user: {
+        id: user.id,
+        emri: user.emri,
+        email: user.email,
+        role: user.role?.trim().toLowerCase()
+      },
     });
   } catch (err) {
     console.log(err);

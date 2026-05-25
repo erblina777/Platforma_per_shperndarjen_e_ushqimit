@@ -22,7 +22,16 @@ class Restaurants {
       callback(rows[0]);
     });
   }
-
+  static findByUserId(user_id, callback) {
+    connection.query(
+      "SELECT * FROM restaurants WHERE user_id = ?",
+      [user_id],
+      (err, rows) => {
+        if (err) throw err;
+        callback(rows[0]);
+      }
+    );
+  }
   static create(data, callback) {
     const query = `INSERT INTO restaurants 
     (emertimi, pershkrimi, adresa, qyteti, user_id) 
