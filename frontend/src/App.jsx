@@ -10,6 +10,7 @@ import RestaurantDashboard from "./pages/RestaurantDashboard";
 import DriverDashboard from "./pages/DriverDashboard";
 import ProtectedRoute from "./ProtectedRoute";
 import AdminDashboard from "./pages/AdminDashboard";
+import ProfilPage from "./pages/ProfilPage";
 export default function App() {
   return (
     <BrowserRouter>
@@ -20,6 +21,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+      <Route path="/profil" element={<ProfilPage />} />
         <Route path="/restaurant-dashboard"
           element={
             <ProtectedRoute allowedRoles={["owner"]}>
@@ -43,6 +45,7 @@ export default function App() {
     </ProtectedRoute>
   }
 />
+
       </Routes>
       
       <Footer />
