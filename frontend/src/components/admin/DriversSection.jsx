@@ -12,14 +12,14 @@ export default function DriversSection() {
   const loadDrivers = () => {
 
     axios
-      .get("http://localhost:3000/deliverydrivers")
+      .get("http://localhost:3000/drivers")
       .then(res => setDrivers(res.data));
   };
 
   const deleteDriver = async(id) => {
 
     await axios.delete(
-      `http://localhost:3000/deliverydrivers/${id}`
+      `http://localhost:3000/drivers/${id}`
     );
 
     loadDrivers();

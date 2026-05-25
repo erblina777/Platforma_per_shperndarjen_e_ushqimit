@@ -19,8 +19,8 @@ export default function AdminStats() {
     axios.get("http://localhost:3000/orders")
       .then(res => setOrders(res.data));
 
-    axios.get("http://localhost:3000/deliverydrivers")
-      .then(res => setDrivers(res.data));
+axios.get("http://localhost:3000/drivers")
+  .then(res => setDrivers(res.data));
 
   },[]);
 

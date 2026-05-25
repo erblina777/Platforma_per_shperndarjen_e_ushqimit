@@ -1,17 +1,29 @@
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function ReviewsSection() {
 
-  const [reviews,setReviews] = useState([]);
+  const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
+    loadReviews();
+  }, []);
+
+  const loadReviews = () => {
 
     axios
       .get("http://localhost:3000/reviews")
       .then(res => setReviews(res.data));
+  };
 
-  },[]);
+  const deleteReview = async(id) => {
+
+    await axios.delete(
+      `http://localhost:3000/reviews/${id}`
+    );
+
+    loadReviews();
+  };
 
   return (
 
@@ -31,6 +43,7 @@ export default function ReviewsSection() {
               <th>Restaurant</th>
               <th>Rating</th>
               <th>Comment</th>
+              <th>Actions</th>
             </tr>
 
           </thead>
@@ -52,6 +65,23 @@ export default function ReviewsSection() {
                 </td>
 
                 <td>{review.komenti}</td>
+
+                <td>
+
+                  <div className="action-buttons">
+
+                    <button
+                      className="delete-btn"
+                      onClick={() =>
+                        deleteReview(review.id)
+                      }
+                    >
+                      Delete
+                    </button>
+
+                  </div>
+
+                </td>
 
               </tr>
 

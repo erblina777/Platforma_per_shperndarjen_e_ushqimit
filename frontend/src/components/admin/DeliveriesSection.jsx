@@ -1,19 +1,28 @@
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function DeliveriesSection() {
 
-  const [deliveries,setDeliveries] = useState([]);
+  const [deliveries, setDeliveries] = useState([]);
 
   useEffect(() => {
     loadDeliveries();
-  },[]);
+  }, []);
 
   const loadDeliveries = () => {
 
     axios
       .get("http://localhost:3000/deliveries")
       .then(res => setDeliveries(res.data));
+  };
+
+  const deleteDelivery = async(id) => {
+
+    await axios.delete(
+      `http://localhost:3000/deliveries/${id}`
+    );
+
+    loadDeliveries();
   };
 
   return (
@@ -34,6 +43,7 @@ export default function DeliveriesSection() {
               <th>Driver</th>
               <th>Status</th>
               <th>Estimated</th>
+              <th>Actions</th>
             </tr>
 
           </thead>
@@ -54,6 +64,23 @@ export default function DeliveriesSection() {
 
                 <td>
                   {delivery.koha_vleresuar} min
+                </td>
+
+                <td>
+
+                  <div className="action-buttons">
+
+                    <button
+                      className="delete-btn"
+                      onClick={() =>
+                        deleteDelivery(delivery.id)
+                      }
+                    >
+                      Delete
+                    </button>
+
+                  </div>
+
                 </td>
 
               </tr>
