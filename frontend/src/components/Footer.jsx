@@ -8,11 +8,11 @@ export default function Footer() {
         </div>
 
         <div>
-          <h4>Company</h4>
+          <h4>Pages</h4>
           <ul>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Careers</a></li>
-            <li><a href="#">Contact</a></li>
+            <li><a href="#">Shopping Cart</a></li>
+            <li><a href="/menu-items">Menu</a></li>
+            <li><a href="#">Restaurants</a></li>
           </ul>
         </div>
 

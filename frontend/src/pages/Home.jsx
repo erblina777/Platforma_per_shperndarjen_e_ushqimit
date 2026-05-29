@@ -95,7 +95,7 @@ function Home() {
             {menuitems.map((item) => (
               <div className="card" key={item.id}>
                 <img
-                  src={`/images/menuitems/${item.foto}`}
+                  src={`http://localhost:3000/uploads/${item.foto}`}
                   alt={item.emertimi}
                   
                 />
