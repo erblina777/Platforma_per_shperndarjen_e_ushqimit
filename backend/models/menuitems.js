@@ -1,9 +1,55 @@
 const connection = require('../database/database');
 
 class MenuItems {
-  static findAll(cb) {
-    connection.query("SELECT * FROM menuitems", (err, rows) => {
-      if (err) throw err;
+  static findAll(filters, cb) {
+
+    let query = `
+      SELECT 
+        mi.*,
+        mc.emertimi AS category_name,
+        r.emertimi AS restaurant_name
+      FROM menuitems mi
+      JOIN menucategories mc 
+        ON mi.category_id = mc.id
+      JOIN restaurants r 
+        ON mc.restaurant_id = r.id
+      WHERE 1=1
+    `;
+
+    const values = [];
+
+    // SEARCH
+
+    if (filters.search && filters.search.trim() !== "") {
+      query += ` AND mi.emertimi LIKE ?`;
+      values.push(`%${filters.search}%`);
+    }
+
+    // MIN PRICE
+
+    if (filters.minPrice !== "" && filters.minPrice != null) {
+      query += ` AND mi.cmimi >= ?`;
+      values.push(Number(filters.minPrice));
+    }
+
+    // MAX PRICE
+
+    if (filters.maxPrice !== "" && filters.maxPrice != null) {
+      query += ` AND mi.cmimi <= ?`;
+      values.push(Number(filters.maxPrice));
+    }
+
+    connection.query(query, values, (err, rows) => {
+
+      console.log("QUERY EXECUTED");
+
+      if (err) {
+        console.log(err);
+        return cb([]);
+      }
+
+      console.log(rows);
+
       cb(rows);
     });
   }
@@ -11,8 +57,9 @@ class MenuItems {
     connection.query(
       `
       SELECT mi.*
-      FROM MenuItems mi
-      JOIN MenuCategories mc ON mi.category_id = mc.id
+      FROM menuitems mi
+      JOIN menucategories mc 
+        ON mi.category_id = mc.id
       WHERE mc.restaurant_id = ?
       `,
       [restaurantId],

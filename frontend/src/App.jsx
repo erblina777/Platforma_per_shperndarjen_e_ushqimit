@@ -11,6 +11,7 @@ import DriverDashboard from "./pages/DriverDashboard";
 import ProtectedRoute from "./ProtectedRoute";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProfilPage from "./pages/ProfilPage";
+import MenuItemsPage from "./pages/MenuItemsPage";
 export default function App() {
   return (
     <BrowserRouter>
@@ -22,29 +23,30 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       <Route path="/profil" element={<ProfilPage />} />
-        <Route path="/restaurant-dashboard"
-          element={
-            <ProtectedRoute allowedRoles={["owner"]}>
-              <RestaurantDashboard />
-            </ProtectedRoute>
-          }
-        />
-         <Route
-          path="/driver-dashboard"
-          element={
-            <ProtectedRoute allowedRoles={["driver"]}>
-              <DriverDashboard />
-            </ProtectedRoute>
-          }
-        />
-  <Route
-  path="/admin-dashboard"
-  element={
-    <ProtectedRoute allowedRoles={["admin"]}>
-      <AdminDashboard />
-    </ProtectedRoute>
-  }
-/>
+      <Route path="/restaurant-dashboard"
+        element={
+          <ProtectedRoute allowedRoles={["owner"]}>
+            <RestaurantDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/driver-dashboard"
+        element={
+          <ProtectedRoute allowedRoles={["driver"]}>
+            <DriverDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+      path="/admin-dashboard"
+      element={
+        <ProtectedRoute allowedRoles={["admin"]}>
+          <AdminDashboard />
+        </ProtectedRoute>
+      }
+      />
+      <Route path="/menu-items" element={<MenuItemsPage />} />
 
       </Routes>
       
