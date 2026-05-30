@@ -12,6 +12,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProfilPage from "./pages/ProfilPage";
 import MenuItemsPage from "./pages/MenuItemsPage";
+import OrderPage from "./pages/OrderPage";
 export default function App() {
   return (
     <BrowserRouter>
@@ -47,6 +48,10 @@ export default function App() {
       }
       />
       <Route path="/menu-items" element={<MenuItemsPage />} />
+      <Route
+  path="/order"
+  element={<OrderPage />}
+/>
 
       </Routes>
       

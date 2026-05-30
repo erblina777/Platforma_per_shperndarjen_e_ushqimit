@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "../styles/MenuItemsPage.css";
 
 export default function MenuItemsPage() {
 
+  const navigate = useNavigate();
   const [items, setItems] = useState([]);
 
   const [filters, setFilters] = useState({
@@ -122,6 +124,16 @@ export default function MenuItemsPage() {
                 <strong>Restaurant:</strong>{" "}
                 {item.restaurant_name}
               </p>
+              <button
+  className="order-btn"
+  onClick={() =>
+    navigate("/order", {
+      state: { item }
+    })
+  }
+>
+  Order Now
+</button>
 
             </div>
 
