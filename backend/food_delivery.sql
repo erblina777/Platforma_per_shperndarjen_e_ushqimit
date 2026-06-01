@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 22, 2026 at 05:06 PM
+-- Generation Time: Jun 01, 2026 at 09:33 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -69,13 +69,6 @@ CREATE TABLE `deliverydrivers` (
   `vleresimi` decimal(3,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `deliverydrivers`
---
-
-INSERT INTO `deliverydrivers` (`id`, `user_id`, `automjeti`, `targa`, `zona`, `statusi`, `vleresimi`) VALUES
-(2, NULL, NULL, NULL, NULL, NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -89,16 +82,6 @@ CREATE TABLE `menucategories` (
   `pershkrimi` text DEFAULT NULL,
   `renditja` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `menucategories`
---
-
-INSERT INTO `menucategories` (`id`, `restaurant_id`, `emertimi`, `pershkrimi`, `renditja`) VALUES
-(2, NULL, 'Food', 'Ushqim', NULL),
-(7, 4, 'Burgers', 'All burger items', 1),
-(8, 4, 'Drinks', 'Cold drinks', 2),
-(9, 5, 'Pizzas', 'All pizza types', 1);
 
 -- --------------------------------------------------------
 
@@ -118,15 +101,6 @@ CREATE TABLE `menuitems` (
   `kalori` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `menuitems`
---
-
-INSERT INTO `menuitems` (`id`, `category_id`, `emertimi`, `pershkrimi`, `cmimi`, `foto`, `disponueshme`, `alergjene`, `kalori`) VALUES
-(6, 7, 'Classic Burger', 'Beef burger with cheese', 5.50, 'classicburger.png', 1, 'gluten,dairy', 650),
-(7, 8, 'Coca Cola', 'Cold drink', 1.50, 'cocacola.png', 1, NULL, 150),
-(8, 9, 'Margherita Pizza', 'Cheese & tomato', 6.00, 'margherita.png\r\n', 1, 'gluten,dairy', 700);
-
 -- --------------------------------------------------------
 
 --
@@ -141,6 +115,15 @@ CREATE TABLE `orderitems` (
   `cmimi` decimal(10,2) DEFAULT NULL,
   `shenimet` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `orderitems`
+--
+
+INSERT INTO `orderitems` (`id`, `order_id`, `menu_item_id`, `sasia`, `cmimi`, `shenimet`) VALUES
+(1, NULL, NULL, NULL, NULL, NULL),
+(2, NULL, NULL, NULL, NULL, NULL),
+(6, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -179,14 +162,6 @@ CREATE TABLE `promotions` (
   `statusi` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `promotions`
---
-
-INSERT INTO `promotions` (`id`, `restaurant_id`, `kodi`, `zbritja_perqind`, `zbritja_max`, `data_fillimit`, `data_perfundimit`, `statusi`) VALUES
-(1, 4, 'SAVE10', 10.00, 5.00, '2026-01-01', '2026-12-31', 'active'),
-(2, 5, 'PIZZA20', 20.00, 8.00, '2026-01-01', '2026-12-31', 'active');
-
 -- --------------------------------------------------------
 
 --
@@ -224,15 +199,6 @@ CREATE TABLE `restaurants` (
   `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `restaurants`
---
-
-INSERT INTO `restaurants` (`id`, `emertimi`, `pershkrimi`, `adresa`, `qyteti`, `telefoni`, `email`, `logo`, `orari_hapjes`, `orari_mbylljes`, `vleresimi`, `status`, `user_id`) VALUES
-(3, 'Burger King', 'Burgers të freskëta dhe të shijshme çdo ditë.', 'Adresa...', 'Prishtinë', '049123789', 'burgerking@gmail.com', 'burgerking.png', '08:00:00', '20:00:00', 4.70, 'active', 6),
-(4, 'Burger House', 'Best burgers in town', 'Rruga 1', 'Prishtinë', '049111222', 'burger@house.com', 'burgerhouse.png', '09:00:00', '23:00:00', 4.50, 'active', 1),
-(5, 'Pizza Time', 'Italian style pizza', 'Rruga 2', 'Prishtinë', '049333444', 'pizza@time.com', 'pizzatime.png', '10:00:00', '00:00:00', 4.70, 'active', 1);
-
 -- --------------------------------------------------------
 
 --
@@ -248,14 +214,6 @@ CREATE TABLE `reviews` (
   `komenti` text DEFAULT NULL,
   `data_krijimit` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `reviews`
---
-
-INSERT INTO `reviews` (`id`, `order_id`, `user_id`, `restaurant_id`, `vleresimi`, `komenti`, `data_krijimit`) VALUES
-(1, NULL, NULL, 4, 5, 'Super ushqim dhe shërbim i shpejtë!', '2026-05-19 17:50:35'),
-(2, NULL, NULL, 5, 4, 'Shumë pizza e mirë!', '2026-05-19 17:50:35');
 
 -- --------------------------------------------------------
 
@@ -275,10 +233,7 @@ CREATE TABLE `roles` (
 --
 
 INSERT INTO `roles` (`id`, `emertimi`, `pershkrimi`, `normalized_name`) VALUES
-(3, 'Admin', 'System admin', 'ADMIN'),
-(4, 'Customer', 'Regular user', 'CUSTOMER'),
-(5, 'Owner', 'Restaurant owner', 'OWNER'),
-(15, 'Driver', 'Delivery Driver', 'DRIVER');
+(3, 'Admin', 'Super admin\r\n\r\n\r\n', 'admin');
 
 -- --------------------------------------------------------
 
@@ -305,6 +260,13 @@ CREATE TABLE `userroles` (
   `role_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `userroles`
+--
+
+INSERT INTO `userroles` (`id`, `user_id`, `role_id`) VALUES
+(7, 7, 3);
+
 -- --------------------------------------------------------
 
 --
@@ -330,13 +292,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `emri`, `mbiemri`, `email`, `password_hash`, `phone_number`, `email_confirmed`, `lockout_enabled`, `access_failed_count`, `data_krijimit`, `status`) VALUES
-(1, 'test', 'testttT', 'test@email.com', '55554rt5y5', NULL, 0, 0, 0, '2026-05-05 09:08:17', 'active'),
-(3, 'test', 'testttTee', 'tesdt@email.com', '55554rt5y5', NULL, 0, 0, 0, '2026-05-06 14:23:58', 'active'),
-(4, 'test', 'dedde', 'dwedew@mail.com', 'wefwfw', NULL, 0, 0, 0, '2026-05-06 14:57:35', 'active'),
-(5, 'Ardit', 'Hoxha', 'ardit@mail.com', '123456', NULL, 0, 0, 0, '2026-05-19 17:39:11', 'active'),
-(6, 'Sara', 'Krasniqi', 'sara@mail.com', '123456', NULL, 0, 0, 0, '2026-05-19 17:39:11', 'active'),
-(9, 'Arben', 'Krasniqi', 'arben@example.com', 'hashed123', NULL, 0, 0, 0, '2026-05-19 17:45:34', 'active'),
-(10, 'Elira', 'Hoxha', 'elira@example.com', 'hashed123', NULL, 0, 0, 0, '2026-05-19 17:45:34', 'active');
+(7, 'Jonila ', 'Thaci', 'jonilathaci@gmail.com', '$2b$10$YviF6TSesYmxkbYw9kkJ5etVfbw2ee1vtooTfd.2MDIhr1WeNVa7y', NULL, 0, 0, 0, '2026-05-26 09:59:47', 'active');
 
 -- --------------------------------------------------------
 
@@ -481,49 +437,49 @@ ALTER TABLE `usertokens`
 -- AUTO_INCREMENT for table `addresses`
 --
 ALTER TABLE `addresses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `deliveries`
 --
 ALTER TABLE `deliveries`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `deliverydrivers`
 --
 ALTER TABLE `deliverydrivers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `menucategories`
 --
 ALTER TABLE `menucategories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `menuitems`
 --
 ALTER TABLE `menuitems`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `orderitems`
 --
 ALTER TABLE `orderitems`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `promotions`
 --
 ALTER TABLE `promotions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `refreshtokens`
@@ -535,19 +491,19 @@ ALTER TABLE `refreshtokens`
 -- AUTO_INCREMENT for table `restaurants`
 --
 ALTER TABLE `restaurants`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `userclaims`
@@ -559,13 +515,13 @@ ALTER TABLE `userclaims`
 -- AUTO_INCREMENT for table `userroles`
 --
 ALTER TABLE `userroles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `usertokens`
@@ -581,20 +537,20 @@ ALTER TABLE `usertokens`
 -- Constraints for table `addresses`
 --
 ALTER TABLE `addresses`
-  ADD CONSTRAINT `addresses_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `addresses_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `deliveries`
 --
 ALTER TABLE `deliveries`
-  ADD CONSTRAINT `deliveries_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
-  ADD CONSTRAINT `deliveries_ibfk_2` FOREIGN KEY (`driver_id`) REFERENCES `deliverydrivers` (`id`);
+  ADD CONSTRAINT `deliveries_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `deliveries_ibfk_2` FOREIGN KEY (`driver_id`) REFERENCES `deliverydrivers` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `deliverydrivers`
 --
 ALTER TABLE `deliverydrivers`
-  ADD CONSTRAINT `deliverydrivers_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `deliverydrivers_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `menucategories`
@@ -619,14 +575,14 @@ ALTER TABLE `orderitems`
 -- Constraints for table `orders`
 --
 ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurants` (`id`);
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurants` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `promotions`
 --
 ALTER TABLE `promotions`
-  ADD CONSTRAINT `promotions_ibfk_1` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurants` (`id`);
+  ADD CONSTRAINT `promotions_ibfk_1` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurants` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `refreshtokens`
@@ -638,15 +594,15 @@ ALTER TABLE `refreshtokens`
 -- Constraints for table `restaurants`
 --
 ALTER TABLE `restaurants`
-  ADD CONSTRAINT `restaurants_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `restaurants_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `reviews`
 --
 ALTER TABLE `reviews`
-  ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
-  ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `reviews_ibfk_3` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurants` (`id`);
+  ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `reviews_ibfk_3` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurants` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `userclaims`

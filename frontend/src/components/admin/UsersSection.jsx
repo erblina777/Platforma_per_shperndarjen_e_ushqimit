@@ -3,27 +3,47 @@ import axios from "axios";
 
 export default function UsersSection() {
 
-  const [users,setUsers] = useState([]);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     loadUsers();
-  },[]);
+  }, []);
 
   const loadUsers = () => {
     axios
       .get("http://localhost:3000/users")
-      .then(res => setUsers(res.data));
+      .then(res => setUsers(res.data))
+      .catch(err => console.log(err));
   };
 
-  const deleteUser = async(id) => {
+  const deleteUser = async (id) => {
+    try {
 
-    await axios.delete(`http://localhost:3000/users/${id}`);
+      const res = await axios.delete(
+        `http://localhost:3000/users/${id}`
+      );
 
-    loadUsers();
+      alert(res.data.message);
+
+      loadUsers();
+
+    } catch (err) {
+
+      console.log("DELETE ERROR:", err);
+
+      console.log(
+        "SERVER RESPONSE:",
+        err.response?.data
+      );
+
+      alert(
+        err.response?.data?.message ||
+        "Delete failed - shiko console"
+      );
+    }
   };
 
   return (
-
     <section className="dashboard-section">
 
       <h2>Users</h2>
@@ -62,8 +82,10 @@ export default function UsersSection() {
 
                   <div className="action-buttons">
 
-                    <button className="delete-btn"
-                      onClick={() => deleteUser(user.id)}>
+                    <button
+                      className="delete-btn"
+                      onClick={() => deleteUser(user.id)}
+                    >
                       Delete
                     </button>
 
