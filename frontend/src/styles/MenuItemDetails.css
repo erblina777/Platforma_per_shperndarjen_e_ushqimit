@@ -1,0 +1,103 @@
+/* PAGE WRAPPER */
+.menu-item-details {
+  min-height: 100vh;
+  background: #f5f5f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* CARD */
+.menu-card {
+  background: white;
+  width: 100%;
+  max-width: 650px;
+  border-radius: 18px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  padding: 25px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* TITLE */
+.menu-card h1 {
+  font-size: 28px;
+  margin-bottom: 15px;
+  color: #222;
+}
+
+/* DESCRIPTION */
+.desc {
+  font-size: 15px;
+  color: #555;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+/* INFO SECTION */
+.info {
+  background: #fafafa;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.info p {
+  margin: 8px 0;
+  font-size: 15px;
+  color: #333;
+}
+
+/* IMAGE */
+.menu-img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 14px;
+  margin-top: 15px;
+}
+
+/* ALLERGEN ALERT */
+.alert {
+  margin-top: 15px;
+  padding: 12px;
+  background: #fff3cd;
+  border: 1px solid #ffeeba;
+  border-radius: 10px;
+  color: #856404;
+  font-size: 14px;
+}
+
+/* LOADING TEXT */
+.menu-item-details p {
+  font-size: 16px;
+  color: #555;
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .menu-card {
+    padding: 18px;
+  }
+
+  .menu-card h1 {
+    font-size: 22px;
+  }
+
+  .menu-img {
+    height: 220px;
+  }
+}

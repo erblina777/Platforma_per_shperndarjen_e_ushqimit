@@ -13,6 +13,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import ProfilPage from "./pages/ProfilPage";
 import MenuItemsPage from "./pages/MenuItemsPage";
 import OrderPage from "./pages/OrderPage";
+import MenuItemDetails from "./pages/MenuItemDetails";
 export default function App() {
   return (
     <BrowserRouter>
@@ -24,6 +25,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       <Route path="/profil" element={<ProfilPage />} />
+      <Route path="/menu/:id" element={<MenuItemDetails />} />
       <Route path="/restaurant-dashboard"
         element={
           <ProtectedRoute allowedRoles={["owner"]}>

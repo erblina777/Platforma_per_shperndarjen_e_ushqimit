@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import "../styles/MenuItemsPage.css";
 
 export default function MenuItemsPage() {
-
   const navigate = useNavigate();
   const [items, setItems] = useState([]);
 
@@ -23,22 +22,18 @@ export default function MenuItemsPage() {
 
     return () => clearTimeout(timer);
   }, [tempFilters]);
-    useEffect(() => {
-      fetchItems();
-    }, [filters]);
+
+  useEffect(() => {
+    fetchItems();
+  }, [filters]);
 
   const fetchItems = async () => {
     try {
-
-      const res = await axios.get(
-        "http://localhost:3000/menuitems",
-        {
-          params: filters,
-        }
-      );
+      const res = await axios.get("http://localhost:3000/menuitems", {
+        params: filters,
+      });
 
       setItems(res.data || []);
-
     } catch (err) {
       console.error(err);
       setItems([]);
@@ -47,22 +42,16 @@ export default function MenuItemsPage() {
 
   return (
     <div className="menu-items-page">
-
       <h1>Menu Items</h1>
 
       {/* FILTERS */}
-
       <div className="menu-items-filters">
-
         <input
           type="text"
           placeholder="Search..."
           value={tempFilters.search}
           onChange={(e) =>
-            setTempFilters({
-              ...tempFilters,
-              search: e.target.value,
-            })
+            setTempFilters({ ...tempFilters, search: e.target.value })
           }
         />
 
@@ -71,10 +60,7 @@ export default function MenuItemsPage() {
           placeholder="Min Price"
           value={tempFilters.minPrice}
           onChange={(e) =>
-            setTempFilters({
-              ...tempFilters,
-              minPrice: e.target.value,
-            })
+            setTempFilters({ ...tempFilters, minPrice: e.target.value })
           }
         />
 
@@ -83,62 +69,66 @@ export default function MenuItemsPage() {
           placeholder="Max Price"
           value={tempFilters.maxPrice}
           onChange={(e) =>
-            setTempFilters({
-              ...tempFilters,
-              maxPrice: e.target.value,
-            })
+            setTempFilters({ ...tempFilters, maxPrice: e.target.value })
           }
         />
-
       </div>
 
       {/* ITEMS */}
-
       <div className="menu-items-grid">
-
-        {items?.map((item) => (
-
+        {items.map((item) => (
           <div className="menu-item-card" key={item.id}>
+            
+            {/* CLICK CARD -> DETAILS */}
+            <div
+              onClick={() => navigate(`/menuitems/${item.id}`)}
+              style={{ cursor: "pointer" }}
+            >
+              <img
+                src={`http://localhost:3000/uploads/${item.foto}`}
+                alt={item.emertimi}
+              />
 
-            <img
-              src={`http://localhost:3000/uploads/${item.foto}`}
-              alt={item.emertimi}
-            />
+              <div className="menu-item-content">
+                <h2>{item.emertimi}</h2>
+                <p>{item.pershkrimi}</p>
 
-            <div className="menu-item-content">
+                <p className="menu-item-price">€{item.cmimi}</p>
 
-              <h2>{item.emertimi}</h2>
+                <p>
+                  <strong>Category:</strong> {item.category_name}
+                </p>
 
-              <p>{item.pershkrimi}</p>
+                <p>
+                  <strong>Restaurant:</strong> {item.restaurant_name}
+                </p>
+              </div>
+            </div>
 
-              <p className="menu-item-price">
-                €{item.cmimi}
-              </p>
-
-              <p>
-                <strong>Category:</strong>{" "}
-                {item.category_name}
-              </p>
-
-              <p>
-                <strong>Restaurant:</strong>{" "}
-                {item.restaurant_name}
-              </p>
+            {/* BUTTONS */}
+            <div className="menu-item-actions">
               <button
-  className="order-btn"
-  onClick={() =>
-    navigate("/order", {
-      state: { item }
-    })
-  }
->
-  Order Now
-</button>
+                className="order-btn"
+                onClick={() =>
+                  navigate("/order", {
+                    state: { item },
+                  })
+                }
+              >
+                Order Now
+              </button>
 
+              <button
+                className="details-btn"
+                onClick={() =>
+                  navigate(`/menu/${item.id}`)
+                }
+              >
+                View Details
+              </button>
             </div>
 
           </div>
-
         ))}
       </div>
     </div>
