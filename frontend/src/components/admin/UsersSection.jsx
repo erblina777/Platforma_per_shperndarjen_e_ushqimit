@@ -2,8 +2,17 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function UsersSection() {
-
   const [users, setUsers] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  const [editingUser, setEditingUser] = useState(null);
+
+  const [formData, setFormData] = useState({
+    emri: "",
+    mbiemri: "",
+    email: "",
+    phone_number: "",
+    password: ""
+  });
 
   useEffect(() => {
     loadUsers();
@@ -16,42 +25,68 @@ export default function UsersSection() {
       .catch(err => console.log(err));
   };
 
-  const deleteUser = async (id) => {
+  const openInsert = () => {
+    setEditingUser(null);
+
+    setFormData({
+      emri: "",
+      mbiemri: "",
+      email: "",
+      phone_number: "",
+      password: ""
+    });
+
+    setShowForm(true);
+  };
+
+  const openEdit = (user) => {
+    setEditingUser(user);
+
+    setFormData({
+      emri: user.emri || "",
+      mbiemri: user.mbiemri || "",
+      email: user.email || "",
+      phone_number: user.phone_number || "",
+      password: ""
+    });
+
+    setShowForm(true);
+  };
+
+  const handleSave = async () => {
     try {
+      if (editingUser) {
+        await axios.put(
+          `http://localhost:3000/users/${editingUser.id}`,
+          formData
+        );
+      } else {
+        await axios.post(
+          "http://localhost:3000/users",
+          formData
+        );
+      }
 
-      const res = await axios.delete(
-        `http://localhost:3000/users/${id}`
-      );
-
-      alert(res.data.message);
-
+      setShowForm(false);
       loadUsers();
-
     } catch (err) {
-
-      console.log("DELETE ERROR:", err);
-
-      console.log(
-        "SERVER RESPONSE:",
-        err.response?.data
-      );
-
-      alert(
-        err.response?.data?.message ||
-        "Delete failed - shiko console"
-      );
+      console.log(err.response?.data || err.message);
     }
+  };
+
+  const deleteUser = async (id) => {
+    await axios.delete(`http://localhost:3000/users/${id}`);
+    loadUsers();
   };
 
   return (
     <section className="dashboard-section">
-
       <h2>Users</h2>
 
+      <button onClick={openInsert}>+ Add User</button>
+
       <div className="table-wrapper">
-
         <table className="admin-table">
-
           <thead>
             <tr>
               <th>ID</th>
@@ -63,46 +98,89 @@ export default function UsersSection() {
           </thead>
 
           <tbody>
-
             {users.map(user => (
-
               <tr key={user.id}>
-
                 <td>{user.id}</td>
-
-                <td>
-                  {user.emri} {user.mbiemri}
-                </td>
-
+                <td>{user.emri} {user.mbiemri}</td>
                 <td>{user.email}</td>
-
                 <td>{user.phone_number}</td>
 
                 <td>
+                  <button onClick={() => openEdit(user)}>
+                    Edit
+                  </button>
 
-                  <div className="action-buttons">
-
-                    <button
-                      className="delete-btn"
-                      onClick={() => deleteUser(user.id)}
-                    >
-                      Delete
-                    </button>
-
-                  </div>
-
+                  <button
+                    className="delete-btn"
+                    onClick={() => deleteUser(user.id)}
+                  >
+                    Delete
+                  </button>
                 </td>
-
               </tr>
-
             ))}
-
           </tbody>
-
         </table>
-
       </div>
 
+      {showForm && (
+        <div className="form-box">
+          <h3>
+            {editingUser ? "Edit User" : "Add User"}
+          </h3>
+
+          <input
+            placeholder="Emri"
+            value={formData.emri}
+            onChange={(e) =>
+              setFormData({ ...formData, emri: e.target.value })
+            }
+          />
+
+          <input
+            placeholder="Mbiemri"
+            value={formData.mbiemri}
+            onChange={(e) =>
+              setFormData({ ...formData, mbiemri: e.target.value })
+            }
+          />
+
+          <input
+            placeholder="Email"
+            value={formData.email}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
+          />
+
+          <input
+            placeholder="Phone"
+            value={formData.phone_number}
+            onChange={(e) =>
+              setFormData({ ...formData, phone_number: e.target.value })
+            }
+          />
+
+          <input
+            type="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={(e) =>
+              setFormData({ ...formData, password: e.target.value })
+            }
+          />
+
+          <div className="action-buttons">
+            <button onClick={handleSave} className="edit-btn">
+              Save
+            </button>
+
+            <button onClick={() => setShowForm(false)} className="delete-btn">
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

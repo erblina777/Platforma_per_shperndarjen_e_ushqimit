@@ -1,42 +1,102 @@
 const connection = require('../database/database');
 
-class UserRoles {
+class Restaurants {
 
-  static assign(user_id, role_id, callback) {
+  // GET ALL (rating nga reviews)
+  static findAll(callback) {
+    const query = `
+      SELECT 
+        r.id,
+        r.emertimi,
+        r.qyteti,
+        COALESCE(r.status,'inactive') AS status,
+        COALESCE((
+          SELECT AVG(vleresimi)
+          FROM reviews
+          WHERE restaurant_id = r.id
+        ),0) AS vleresimi
+      FROM restaurants r
+    `;
+
+    connection.query(query, (err, rows) => {
+      if (err) throw err;
+      callback(rows);
+    });
+  }
+
+  static findById(id, callback) {
+    const query = `
+      SELECT 
+        r.id,
+        r.emertimi,
+        r.qyteti,
+        COALESCE(r.status,'inactive') AS status,
+        COALESCE((
+          SELECT AVG(vleresimi)
+          FROM reviews
+          WHERE restaurant_id = r.id
+        ),0) AS vleresimi
+      FROM restaurants r
+      WHERE r.id=?
+    `;
+
+    connection.query(query, [id], (err, rows) => {
+      if (err) throw err;
+      callback(rows[0]);
+    });
+  }
+
+  // CREATE (pa rating)
+  static create(data, callback) {
+    const query = `
+      INSERT INTO restaurants (emertimi, qyteti, status)
+      VALUES (?, ?, ?)
+    `;
+
     connection.query(
-      "INSERT INTO UserRoles (user_id, role_id) VALUES (?, ?)",
-      [user_id, role_id],
+      query,
+      [
+        data.emertimi || "",
+        data.qyteti || "",
+        data.status || "active"
+      ],
       (err, result) => {
         if (err) throw err;
-        callback({ id: result.insertId, user_id, role_id });
+
+        callback({
+          id: result.insertId,
+          ...data,
+          vleresimi: 0
+        });
       }
     );
   }
 
-  static getAll(callback) {
-    connection.query(
-      "SELECT * FROM UserRoles",
-      (err, rows) => {
-        if (err) throw err;
-        callback(rows);
-      }
-    );
-  }
+  static update(id, data, callback) {
+    const query = `
+      UPDATE restaurants
+      SET emertimi=?, qyteti=?, status=?
+      WHERE id=?
+    `;
 
-  static findByUser(user_id, callback) {
     connection.query(
-      "SELECT * FROM UserRoles WHERE user_id=?",
-      [user_id],
-      (err, rows) => {
+      query,
+      [
+        data.emertimi || "",
+        data.qyteti || "",
+        data.status || "active",
+        id
+      ],
+      (err) => {
         if (err) throw err;
-        callback(rows);
+        callback();
       }
     );
   }
 
   static delete(id, callback) {
     connection.query(
-      "DELETE FROM UserRoles WHERE id=?",
+      "DELETE FROM restaurants WHERE id=?",
       [id],
       (err) => {
         if (err) throw err;
@@ -46,4 +106,4 @@ class UserRoles {
   }
 }
 
-module.exports = UserRoles;
+module.exports = Restaurants;

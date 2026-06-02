@@ -7,96 +7,109 @@ class Users {
     this.mbiemri = mbiemri;
     this.email = email;
     this.password_hash = password_hash;
-    this.status = status
+    this.status = status;
   }
 
   static findAll(callback) {
-    const query = "SELECT * FROM users";
-    connection.query(query, (err, rows) => {
+    connection.query("SELECT * FROM users", (err, rows) => {
       if (err) throw err;
-      const users = rows.map(row => new Users(row.id, row.emri, row.mbiemri, row.email, row.password_hash, row.status));
+
+      const users = rows.map(row =>
+        new Users(
+          row.id,
+          row.emri,
+          row.mbiemri,
+          row.email,
+          row.password_hash,
+          row.status
+        )
+      );
+
       callback(users);
     });
   }
 
   static findById(id, callback) {
-    const query = "SELECT * FROM users WHERE id=?";
-    connection.query(query, [id], (err, rows) => {
+    connection.query("SELECT * FROM users WHERE id=?", [id], (err, rows) => {
       if (err) throw err;
+      if (!rows.length) return callback(null);
 
-      if (rows.length === 0) return callback(null);
+      const row = rows[0];
 
-      const user = new Users(rows[0].id, rows[0].emri, rows[0].email, rows[0].password);
+      const user = new Users(
+        row.id,
+        row.emri,
+        row.mbiemri,
+        row.email,
+        row.password_hash,
+        row.status
+      );
+
       callback(user);
     });
   }
 
   static findByEmail(email) {
     return new Promise((resolve, reject) => {
-      const query = `
-        SELECT
-          u.*,
-          r.emertimi AS role
-        FROM users u
-        LEFT JOIN userroles ur
-          ON ur.user_id = u.id
-        LEFT JOIN roles r
-          ON r.id = ur.role_id
-        WHERE u.email = ?
-      `;
-
-      connection.query(query, [email], (err, rows) => {
-        if (err) return reject(err);
-        resolve(rows);
-      });
+      connection.query(
+        "SELECT * FROM users WHERE email=?",
+        [email],
+        (err, rows) => {
+          if (err) return reject(err);
+          resolve(rows);
+        }
+      );
     });
   }
 
   static create(user, callback) {
-  const query =
-    "INSERT INTO users (emri, mbiemri, email, password_hash, status) VALUES (?, ?, ?, ?, ?)";
+    const query =
+      "INSERT INTO users (emri, mbiemri, email, password_hash, status) VALUES (?, ?, ?, ?, ?)";
 
-  const values = [
-    user.emri,
-    user.mbiemri,
-    user.email,
-    user.password_hash,
-    user.status,
-  ];
+    connection.query(
+      query,
+      [
+        user.emri,
+        user.mbiemri,
+        user.email,
+        user.password_hash,
+        user.status
+      ],
+      (err, result) => {
+        if (err) throw err;
 
-  connection.query(query, values, (err, result) => {
-    if (err) throw err;
+        callback({
+          id: result.insertId,
+          ...user
+        });
+      }
+    );
+  }
 
-    callback({
-      id: result.insertId,
-      ...user,
-    });
-  });
-}
   static update(user, callback) {
-    const query = "UPDATE users SET emri=?, mbiemri=?, email=?, password_hash=?, status=? WHERE id=?";
-    const values = [user.emri, user.mbiemri , user.email, user.password_hash, user.status, user.id];
-
-    connection.query(query, values, (err) => {
-      if (err) throw err;
-      callback(user);
-    });
+    connection.query(
+      "UPDATE users SET emri=?, mbiemri=?, email=?, password_hash=?, status=? WHERE id=?",
+      [
+        user.emri,
+        user.mbiemri,
+        user.email,
+        user.password_hash,
+        user.status,
+        user.id
+      ],
+      (err) => {
+        if (err) throw err;
+        callback(user);
+      }
+    );
   }
 
   static deleteById(id, callback) {
-    const query = "DELETE FROM users WHERE id=?";
-    connection.query(query, [id], (err) => {
+    connection.query("DELETE FROM users WHERE id=?", [id], (err) => {
       if (err) throw err;
       callback();
     });
   }
-  static ndryshoStatusin(id, status, callback) {
-  const query = "UPDATE Users SET status=? WHERE id=?";
-  connection.query(query, [status, id], (err) => {
-    if (err) throw err;
-    callback();
-  });
-}
 }
 
 module.exports = Users;
