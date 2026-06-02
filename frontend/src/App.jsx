@@ -15,6 +15,9 @@ import MenuItemsPage from "./pages/MenuItemsPage";
 import OrderPage from "./pages/OrderPage";
 import MenuItemDetails from "./pages/MenuItemDetails";
 import RestaurantsSection from "./pages/RestaurantPage";
+import RestaurantRegisterPage from "./pages/RestaurantRegjisterPage";
+import RestaurantDetailsPage from "./pages/RestaurantDetails";
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -27,7 +30,15 @@ export default function App() {
         <Route path="/register" element={<Register />} />
       <Route path="/profil" element={<ProfilPage />} />
       <Route path="/menu/:id" element={<MenuItemDetails />} />
-      <Route path="/restaurants" element={<RestaurantsSection />} />n
+      <Route
+  path="/restaurants/:id"
+  element={<RestaurantDetailsPage />}
+/>
+      <Route path="/restaurants" element={<RestaurantsSection />} />
+      <Route
+  path="/restaurant-register"
+  element={<RestaurantRegisterPage />}
+/>
       <Route path="/restaurant-dashboard"
         element={
           <ProtectedRoute allowedRoles={["owner"]}>
@@ -64,3 +75,4 @@ export default function App() {
     </BrowserRouter>
   );
 }
+

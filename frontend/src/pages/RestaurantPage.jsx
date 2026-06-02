@@ -49,10 +49,22 @@ export default function RestaurantsPage() {
               <span>⭐ {r.vleresimi ?? "0"}</span>
             </div>
 
-            {/* BUTTON */}
-            <button onClick={() => navigate("/menu-items")}>
-              View Menu
-            </button>
+            {/* BUTTONS */}
+            <div className="restaurant-buttons">
+
+              {/* VIEW MENU (SI E KE PAS) */}
+              <button onClick={() => navigate("/menu-items")}>
+                View Menu
+              </button>
+
+              {/* RESTAURANT DETAILS */}
+              <button
+                onClick={() => navigate(`/restaurants/${r.id}`)}
+              >
+                Restaurant Details
+              </button>
+
+            </div>
 
           </div>
         ))}
