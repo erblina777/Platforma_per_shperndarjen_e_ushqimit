@@ -10,7 +10,7 @@ export default function Navbar() {
           <img className="logo" src="/library/logo.png" alt="Foodly Logo" />
         </a>
         <nav className={`nav-links ${open ? "open" : ""}`}>
-          <a href="#restaurants">Restaurants</a>
+          <a href="restaurants">Restaurants</a>
           <a href="/menu-items">Menu</a>
           <a href="#reviews">Reviews</a>
         </nav>

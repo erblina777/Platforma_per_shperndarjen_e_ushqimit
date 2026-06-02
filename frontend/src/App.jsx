@@ -14,6 +14,7 @@ import ProfilPage from "./pages/ProfilPage";
 import MenuItemsPage from "./pages/MenuItemsPage";
 import OrderPage from "./pages/OrderPage";
 import MenuItemDetails from "./pages/MenuItemDetails";
+import RestaurantsSection from "./pages/RestaurantPage";
 export default function App() {
   return (
     <BrowserRouter>
@@ -26,6 +27,7 @@ export default function App() {
         <Route path="/register" element={<Register />} />
       <Route path="/profil" element={<ProfilPage />} />
       <Route path="/menu/:id" element={<MenuItemDetails />} />
+      <Route path="/restaurants" element={<RestaurantsSection />} />n
       <Route path="/restaurant-dashboard"
         element={
           <ProtectedRoute allowedRoles={["owner"]}>
