@@ -19,11 +19,6 @@ router.put(
   usersController.NdryshoUser
 );
 
-router.put(
-  '/change-password/:id',
-  usersController.NdryshoPassword
-);
-
 router.delete('/:id', usersController.FshijUser);
 
 module.exports = router;

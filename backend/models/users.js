@@ -30,30 +30,23 @@ class Users {
   }
 
   static findById(id, callback) {
-    connection.query(
-      "SELECT * FROM users WHERE id=?",
-      [id],
-      (err, rows) => {
-        if (err) throw err;
+    connection.query("SELECT * FROM users WHERE id=?", [id], (err, rows) => {
+      if (err) throw err;
+      if (!rows.length) return callback(null);
 
-        if (!rows.length) {
-          return callback(null);
-        }
+      const row = rows[0];
 
-        const row = rows[0];
+      const user = new Users(
+        row.id,
+        row.emri,
+        row.mbiemri,
+        row.email,
+        row.password_hash,
+        row.status
+      );
 
-        const user = new Users(
-          row.id,
-          row.emri,
-          row.mbiemri,
-          row.email,
-          row.password_hash,
-          row.status
-        );
-
-        callback(user);
-      }
-    );
+      callback(user);
+    });
   }
 
   static findByEmail(email) {
@@ -106,34 +99,16 @@ class Users {
       ],
       (err) => {
         if (err) throw err;
-
         callback(user);
       }
     );
   }
 
-  static updatePassword(id, password_hash, callback) {
-    connection.query(
-      "UPDATE users SET password_hash=? WHERE id=?",
-      [password_hash, id],
-      (err, result) => {
-        if (err) throw err;
-
-        callback(result);
-      }
-    );
-  }
-
   static deleteById(id, callback) {
-    connection.query(
-      "DELETE FROM users WHERE id=?",
-      [id],
-      (err) => {
-        if (err) throw err;
-
-        callback();
-      }
-    );
+    connection.query("DELETE FROM users WHERE id=?", [id], (err) => {
+      if (err) throw err;
+      callback();
+    });
   }
 }
 
