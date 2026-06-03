@@ -2,9 +2,16 @@ const Users = require("../models/users");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+// REGISTER
 const Register = async (req, res) => {
   try {
     const { emri, mbiemri, email, password } = req.body;
+
+    if (!emri || !mbiemri || !email || !password) {
+      return res.status(400).json({
+        message: "Të gjitha fushat janë të detyrueshme",
+      });
+    }
 
     const existingUser = await Users.findByEmail(email);
 
@@ -25,23 +32,34 @@ const Register = async (req, res) => {
     };
 
     Users.create(user, (newUser) => {
-      res.status(201).json({
+      return res.status(201).json({
         message: "User u regjistrua",
-        user: newUser,
+        user: {
+          id: newUser.id,
+          emri: newUser.emri,
+          mbiemri: newUser.mbiemri,
+          email: newUser.email,
+          status: newUser.status,
+        },
       });
     });
+
   } catch (err) {
     console.log(err);
-
-    res.status(500).json({
-      message: "Server Error",
-    });
+    res.status(500).json({ message: "Server Error" });
   }
 };
 
+// LOGIN
 const Login = async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({
+        message: "Email dhe password janë të detyrueshme",
+      });
+    }
 
     const result = await Users.findByEmail(email);
 
@@ -52,11 +70,8 @@ const Login = async (req, res) => {
     }
 
     const user = result[0];
-    console.log(user);
-    const isMatch = await bcrypt.compare(
-      password,
-      user.password_hash
-    );
+
+    const isMatch = await bcrypt.compare(password, user.password_hash);
 
     if (!isMatch) {
       return res.status(401).json({
@@ -68,30 +83,27 @@ const Login = async (req, res) => {
       {
         id: user.id,
         email: user.email,
-        role: user.role,
+        role: user.role || "user",
       },
       "SECRETKEY",
-      {
-        expiresIn: "7d",
-      }
+      { expiresIn: "7d" }
     );
 
-    res.json({
+    return res.json({
       message: "Login successful",
       token,
       user: {
         id: user.id,
         emri: user.emri,
+        mbiemri: user.mbiemri,   // 🔥 KY ISHTE PROBLEMI YT
         email: user.email,
-        role: user.role?.trim().toLowerCase()
+        role: user.role ? user.role.trim().toLowerCase() : "user",
       },
     });
+
   } catch (err) {
     console.log(err);
-
-    res.status(500).json({
-      message: "Server Error",
-    });
+    res.status(500).json({ message: "Server Error" });
   }
 };
 
