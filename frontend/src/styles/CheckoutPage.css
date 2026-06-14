@@ -1,0 +1,46 @@
+.checkout-page {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.checkout-card {
+  width: 500px;
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow:
+    0 2px 10px
+    rgba(0,0,0,0.1);
+}
+
+.checkout-card h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.checkout-card input,
+.checkout-card textarea,
+.checkout-card select {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.checkout-card button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: #111827;
+  color: white;
+  cursor: pointer;
+}
+
+.checkout-card h2 {
+  margin-top: 20px;
+  text-align: center;
+}

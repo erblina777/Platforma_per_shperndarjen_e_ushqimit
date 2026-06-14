@@ -39,6 +39,34 @@ export default function MenuItemsPage() {
       setItems([]);
     }
   };
+  const addToCart = (item) => {
+
+  const cart =
+    JSON.parse(
+      localStorage.getItem("cart")
+    ) || [];
+
+  const existing =
+    cart.find(
+      p => p.id === item.id
+    );
+
+  if (existing) {
+    existing.quantity += 1;
+  } else {
+    cart.push({
+      ...item,
+      quantity: 1
+    });
+  }
+
+  localStorage.setItem(
+    "cart",
+    JSON.stringify(cart)
+  );
+
+  alert("Added to cart");
+};
 
   return (
     <div className="menu-items-page">
@@ -109,13 +137,11 @@ export default function MenuItemsPage() {
             <div className="menu-item-actions">
               <button
                 className="order-btn"
-                onClick={() =>
-                  navigate("/order", {
-                    state: { item },
-                  })
+                  onClick={() =>
+                    addToCart(item)
                 }
               >
-                Order Now
+              Add To Cart
               </button>
 
               <button
@@ -131,6 +157,18 @@ export default function MenuItemsPage() {
           </div>
         ))}
       </div>
+      <div className="checkout-box">
+
+  <button
+    className="checkout-btn"
+    onClick={() =>
+      navigate("/cart")
+    }
+  >
+    Go To Cart
+  </button>
+
+</div>
     </div>
   );
 }
