@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [restaurants, setRestaurants] = useState([]);
   const [menuitems, setMenuitems] = useState([]);
   const [promotions, setPromotions] = useState([]);
   const [reviews, setReviews] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     // Restaurants
@@ -106,11 +104,7 @@ function Home() {
 
                 <p>{item.cmimi} €</p>
 
-                <button
-                  onClick={() => navigate("/order", { state: { item } })}
-                >
-                  Order Now
-                </button>
+                <button>Add to Cart</button>
               </div>
             ))}
           </div>
