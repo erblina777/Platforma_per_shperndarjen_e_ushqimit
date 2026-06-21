@@ -1,4 +1,6 @@
 const Users = require("../models/users");
+const UserClaims = require("../models/userClaims");
+const UserTokens = require("../models/userTokens");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -24,12 +26,35 @@ const Register = async (req, res) => {
       status: "active",
     };
 
-    Users.create(user, (newUser) => {
-      res.status(201).json({
-        message: "User u regjistrua",
-        user: newUser,
-      });
+    Users.create(user, async (newUser) => {
+      try {
+        await UserClaims.create(
+          newUser.id,
+          "role",
+          "customer"
+        );
+
+        await UserTokens.create(
+          newUser.id,
+          "local",
+          "registration",
+          "registered"
+        );
+
+        res.status(201).json({
+          message: "User u regjistrua",
+          user: newUser,
+        });
+
+      } catch (err) {
+        console.log(err);
+
+        res.status(500).json({
+          message: "Gabim gjatë ruajtjes së tokenit ose claim-it"
+        });
+      }
     });
+
   } catch (err) {
     console.log(err);
 
