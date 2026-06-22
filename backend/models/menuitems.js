@@ -7,6 +7,7 @@ class MenuItems {
       SELECT 
         mi.*,
         mc.emertimi AS category_name,
+        r.id AS restaurant_id,
         r.emertimi AS restaurant_name
       FROM menuitems mi
       JOIN menucategories mc 

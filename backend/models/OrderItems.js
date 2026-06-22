@@ -30,7 +30,12 @@ class OrderItems {
       [item.order_id, item.menu_item_id, item.sasia, item.cmimi, item.shenimet],
       (err, results) => {
         if (err) return callback(err, null);
-        callback(null, { id: results.insertId, ...item });
+        /*callback(null, { id: results.insertId, ...item });*/
+        if (callback)
+  callback(null, {
+    id: results.insertId,
+    ...item
+  });
       }
     );
   }

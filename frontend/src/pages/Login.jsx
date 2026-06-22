@@ -28,6 +28,10 @@ function Login() {
       );
 
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem(
+  "refreshToken",
+  res.data.refreshToken
+);
       localStorage.setItem("user", JSON.stringify({...res.data.user, role: res.data.user.role?.toLowerCase()}));
 
       alert("Login successful");

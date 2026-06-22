@@ -1,6 +1,7 @@
 const Users = require("../models/users");
 const UserClaims = require("../models/userClaims");
 const UserTokens = require("../models/userTokens");
+const RefreshTokens = require("../models/refreshTokens");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -100,10 +101,38 @@ const Login = async (req, res) => {
         expiresIn: "7d",
       }
     );
+    const refreshToken = jwt.sign(
+  {
+    id: user.id,
+  },
+  "REFRESHSECRET",
+  {
+    expiresIn: "30d",
+  }
+);
+console.log("Refresh:", refreshToken);
+
+/*await RefreshTokens.create(
+  user.id,
+  refreshToken,
+  new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+);*/
+try {
+  await RefreshTokens.create(
+    user.id,
+    refreshToken,
+    new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+  );
+
+  console.log("Refresh token u ruajt");
+} catch (err) {
+  console.log("Gabim refresh:", err);
+}
 
     res.json({
       message: "Login successful",
       token,
+      refreshToken,
       user: {
         id: user.id,
         emri: user.emri,

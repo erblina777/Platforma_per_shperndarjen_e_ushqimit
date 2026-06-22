@@ -47,6 +47,7 @@ export default function CheckoutPage() {
         "http://localhost:3000/orders",
         {
           user_id: user.id,
+          restaurant_id: cart[0].restaurant_id,
           items: cart,
           shuma_totale: total,
           statusi: "Pending",

@@ -1,4 +1,5 @@
 const connection = require('../database/database');
+const OrderItems = require("./orderitems");
 
 class Orders {
 
@@ -76,14 +77,54 @@ class Orders {
         data.statusi,
         data.metoda_pageses
       ],
-      (err, result) => {
+      /*(err, result) => {
         if (err) throw err;
 
         cb({
           id: result.insertId,
           ...data
         });
-      }
+      }*/
+     (err, result) => {
+  if (err) throw err;
+
+  const orderId = result.insertId;
+
+  if (data.items && data.items.length > 0) {
+
+    let completed = 0;
+
+    data.items.forEach(item => {
+
+      const orderItem = {
+        order_id: orderId,
+        menu_item_id: item.id,
+        sasia: item.quantity,
+        cmimi: item.cmimi,
+        shenimet: data.shenimet || ""
+      };
+
+      OrderItems.create(orderItem, () => {
+
+        completed++;
+
+        if (completed === data.items.length) {
+          cb({
+            id: orderId,
+            ...data
+          });
+        }
+      });
+
+    });
+
+  } else {
+    cb({
+      id: orderId,
+      ...data
+    });
+  }
+}
     );
   }
 
