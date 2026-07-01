@@ -61,10 +61,13 @@ class Orders {
         restaurant_id,
         adresa_dorezimit,
         shuma_totale,
+        tarifa_dorezimit,
+        zbritja,
         statusi,
-        metoda_pageses
+        metoda_pageses,
+        shenimet
       )
-      VALUES (?, ?, ?, ?, ?, ?)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     connection.query(
@@ -74,8 +77,11 @@ class Orders {
         data.restaurant_id,
         data.adresa_dorezimit,
         data.shuma_totale,
+        data.tarifa_dorezimit,
+        data.zbritja,
         data.statusi,
-        data.metoda_pageses
+        data.metoda_pageses,
+        data.shenimet
       ],
       /*(err, result) => {
         if (err) throw err;

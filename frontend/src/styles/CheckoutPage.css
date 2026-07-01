@@ -43,4 +43,31 @@
 .checkout-card h2 {
   margin-top: 20px;
   text-align: center;
+}.checkout-summary {
+  margin-top: 20px;
+}
+
+.summary-row,
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.summary-row {
+  border-bottom: 1px solid #eee;
+}
+
+.summary-total {
+  font-size: 22px;
+  font-weight: bold;
+  color: #111827;
+  margin-top: 15px;
+}
+
+.checkout-summary hr {
+  margin-top: 15px;
+  border: none;
+  border-top: 2px solid #ddd;
 }
