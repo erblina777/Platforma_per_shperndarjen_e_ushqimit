@@ -84,8 +84,8 @@ function Login() {
         </form>
 
         <div className="auth-footer">
-          Nuk keni llogari?{" "}
-          <Link to="/register">Regjistrohu.</Link>
+          Don't have an account?{" "}
+          <Link to="/register">Register.</Link>
         </div>
       </div>
     </div>

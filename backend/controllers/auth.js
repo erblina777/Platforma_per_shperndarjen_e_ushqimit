@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 
 const Register = async (req, res) => {
   try {
-    const { emri, mbiemri, email, password } = req.body;
+    const { emri, mbiemri, email, password, phone_number } = req.body;
 
     const existingUser = await Users.findByEmail(email);
 
@@ -24,6 +24,7 @@ const Register = async (req, res) => {
       mbiemri,
       email,
       password_hash: hashedPassword,
+      phone_number,
       status: "active",
     };
 

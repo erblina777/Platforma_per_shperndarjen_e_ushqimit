@@ -20,6 +20,7 @@ const ShtoUser = (req, res) => {
     mbiemri,
     email,
     password,
+    phone_number,
     "active"
   );
 

@@ -10,6 +10,7 @@ function Register() {
       mbiemri: "",
       email: "",
       password: "",
+      phone_number: ""
     });
 
   const handleChange = (e) => {
@@ -54,16 +55,17 @@ function Register() {
         <input
           type="text"
           name="emri"
-          placeholder="Emri"
+          placeholder="First Name"
           onChange={handleChange}
         />
 
         <input
           type="text"
           name="mbiemri"
-          placeholder="Mbiemri"
+          placeholder="Last Name"
           onChange={handleChange}
         />
+        
 
         <input
           type="email"
@@ -78,7 +80,12 @@ function Register() {
           placeholder="Password"
           onChange={handleChange}
         />
-
+<input
+  type="text"
+  name="phone_number"
+  placeholder="Phone Number"
+  onChange={handleChange}
+/>
         <button
           className="auth-btn"
           type="submit"
@@ -89,10 +96,10 @@ function Register() {
       </form>
 
       <div className="auth-footer">
-        Keni llogari?{" "}
+        Already have an account?{" "}
 
         <Link to="/login">
-          Kyçu.
+          Login.
         </Link>
       </div>
 

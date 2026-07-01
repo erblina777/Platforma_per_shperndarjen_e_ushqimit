@@ -1,12 +1,13 @@
 const connection = require('../database/database');
 
 class Users {
-  constructor(id, emri, mbiemri, email, password_hash, status = "active") {
+  constructor(id, emri, mbiemri, email, password_hash, phone_number,status = "active") {
     this.id = id;
     this.emri = emri;
     this.mbiemri = mbiemri;
     this.email = email;
     this.password_hash = password_hash;
+    this.phone_number = phone_number;
     this.status = status;
   }
 
@@ -64,7 +65,7 @@ class Users {
 
   static create(user, callback) {
     const query =
-      "INSERT INTO users (emri, mbiemri, email, password_hash, status) VALUES (?, ?, ?, ?, ?)";
+      "INSERT INTO users (emri, mbiemri, email, password_hash,phone_number, status) VALUES (?, ?, ?, ?, ?, ?)";
 
     connection.query(
       query,
@@ -73,6 +74,7 @@ class Users {
         user.mbiemri,
         user.email,
         user.password_hash,
+        user.phone_number,
         user.status
       ],
       (err, result) => {
@@ -88,10 +90,11 @@ class Users {
 
   static update(user, callback) {
     connection.query(
-      "UPDATE users SET emri=?, mbiemri=?, email=?, password_hash=?, status=? WHERE id=?",
+      "UPDATE users SET emri=?, mbiemri=?, phone_number=?, email=?, password_hash=?, status=? WHERE id=?",
       [
         user.emri,
         user.mbiemri,
+        user.phone_number,
         user.email,
         user.password_hash,
         user.status,
