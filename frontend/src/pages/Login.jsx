@@ -27,6 +27,10 @@ function Login() {
         formData
       );
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem(
+  "refreshToken",
+  res.data.refreshToken
+);
       localStorage.setItem("user", JSON.stringify({...res.data.user, role: res.data.user.role?.toLowerCase()}));
 
       alert("Login successful");
@@ -79,8 +83,8 @@ function Login() {
         </form>
 
         <div className="auth-footer">
-          Nuk keni llogari?{" "}
-          <Link to="/register">Regjistrohu.</Link>
+          Don't have an account?{" "}
+          <Link to="/register">Register.</Link>
         </div>
       </div>
     </div>

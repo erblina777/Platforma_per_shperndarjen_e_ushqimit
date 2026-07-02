@@ -1,4 +1,5 @@
 const connection = require('../database/database');
+const OrderItems = require("./orderitems");
 
 class Orders {
 
@@ -60,10 +61,13 @@ class Orders {
         restaurant_id,
         adresa_dorezimit,
         shuma_totale,
+        tarifa_dorezimit,
+        zbritja,
         statusi,
-        metoda_pageses
+        metoda_pageses,
+        shenimet
       )
-      VALUES (?, ?, ?, ?, ?, ?)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     connection.query(
@@ -73,17 +77,60 @@ class Orders {
         data.restaurant_id,
         data.adresa_dorezimit,
         data.shuma_totale,
+        data.tarifa_dorezimit,
+        data.zbritja,
         data.statusi,
-        data.metoda_pageses
+        data.metoda_pageses,
+        data.shenimet
       ],
-      (err, result) => {
+      /*(err, result) => {
         if (err) throw err;
 
         cb({
           id: result.insertId,
           ...data
         });
-      }
+      }*/
+     (err, result) => {
+  if (err) throw err;
+
+  const orderId = result.insertId;
+
+  if (data.items && data.items.length > 0) {
+
+    let completed = 0;
+
+    data.items.forEach(item => {
+
+      const orderItem = {
+        order_id: orderId,
+        menu_item_id: item.id,
+        sasia: item.quantity,
+        cmimi: item.cmimi,
+        shenimet: data.shenimet || ""
+      };
+
+      OrderItems.create(orderItem, () => {
+
+        completed++;
+
+        if (completed === data.items.length) {
+          cb({
+            id: orderId,
+            ...data
+          });
+        }
+      });
+
+    });
+
+  } else {
+    cb({
+      id: orderId,
+      ...data
+    });
+  }
+}
     );
   }
 

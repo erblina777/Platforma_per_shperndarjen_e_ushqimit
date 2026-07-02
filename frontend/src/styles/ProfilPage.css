@@ -1,9 +1,9 @@
 .profile-container {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
   display: flex;
   justify-content: center;
-  padding: 40px;
+  padding: 40px 20px;
 }
 
 .profile-card {
@@ -13,9 +13,6 @@
   border-radius: 20px;
   padding: 30px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
 }
 
 .profile-card h1 {
@@ -31,20 +28,32 @@
   border: 1px solid #eee;
 }
 .profile-info {
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 20px;
   margin-bottom: 30px;
 }
 
 .profile-info p {
-  font-size: 18px;
   margin: 12px 0;
+  font-size: 17px;
+  color: #334155;
+}
+
+.profile-info strong {
+  color: #0f172a;
 }
 
 .password-box {
-  margin-bottom: 40px;
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 35px;
 }
 
 .password-box h2 {
   margin-bottom: 15px;
+  color: #1e293b;
 }
 
 .password-box input {
@@ -61,50 +70,82 @@
 }
 
 .password-box button {
-  padding: 12px 18px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  background: #222;
+  margin-top: 12px;
+  background: #2563eb;
   color: white;
-  transition: 0.2s;
+  border: none;
+  border-radius: 12px;
+  padding: 13px 22px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 .password-box button:hover {
-  background: #444;
+  background: #1d4ed8;
+  transform: translateY(-2px);
 }
 
 .orders-box h2 {
+  color: #1e293b;
   margin-bottom: 20px;
 }
 
 .order-card {
-  border: 1px solid #eee;
-  padding: 18px;
-  border-radius: 15px;
-  margin-bottom: 12px;
   background: white;
-  transition: 0.2s;
+  border-left: 5px solid #2563eb;
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 15px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+  transition: 0.3s;
 }
 
 .order-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.order-card p {
+  margin: 8px 0;
+  color: #475569;
+}
+
+.order-card strong {
+  color: #0f172a;
 }
 
 .logout-btn {
   width: 100%;
-  margin-top: 10px;
+  margin-top: 25px;
   padding: 15px;
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  cursor: pointer;
-  background: #e74c3c;
+  background: #ef4444;
   color: white;
-  transition: 0.2s;
+  border: none;
+  border-radius: 14px;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 .logout-btn:hover {
-  background: #c0392b;
+  background: #dc2626;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .profile-card {
+    padding: 20px;
+  }
+
+  .profile-card h1 {
+    font-size: 26px;
+  }
+
+  .profile-info p,
+  .order-card p {
+    font-size: 15px;
+  }
 }

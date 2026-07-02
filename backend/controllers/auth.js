@@ -1,10 +1,13 @@
 const Users = require("../models/users");
+const UserClaims = require("../models/userClaims");
+const UserTokens = require("../models/userTokens");
+const RefreshTokens = require("../models/refreshTokens");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const Register = async (req, res) => {
   try {
-    const { emri, mbiemri, email, password } = req.body;
+    const { emri, mbiemri, email, password, phone_number } = req.body;
 
     const existingUser = await Users.findByEmail(email);
 
@@ -21,15 +24,39 @@ const Register = async (req, res) => {
       mbiemri,
       email,
       password_hash: hashedPassword,
+      phone_number,
       status: "active",
     };
 
-    Users.create(user, (newUser) => {
-      res.status(201).json({
-        message: "User u regjistrua",
-        user: newUser,
-      });
+    Users.create(user, async (newUser) => {
+      try {
+        await UserClaims.create(
+          newUser.id,
+          "role",
+          "customer"
+        );
+
+        await UserTokens.create(
+          newUser.id,
+          "local",
+          "registration",
+          "registered"
+        );
+
+        res.status(201).json({
+          message: "User u regjistrua",
+          user: newUser,
+        });
+
+      } catch (err) {
+        console.log(err);
+
+        res.status(500).json({
+          message: "Gabim gjatë ruajtjes së tokenit ose claim-it"
+        });
+      }
     });
+
   } catch (err) {
     console.log(err);
 
@@ -75,10 +102,38 @@ const Login = async (req, res) => {
         expiresIn: "7d",
       }
     );
+    const refreshToken = jwt.sign(
+  {
+    id: user.id,
+  },
+  "REFRESHSECRET",
+  {
+    expiresIn: "30d",
+  }
+);
+console.log("Refresh:", refreshToken);
+
+/*await RefreshTokens.create(
+  user.id,
+  refreshToken,
+  new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+);*/
+try {
+  await RefreshTokens.create(
+    user.id,
+    refreshToken,
+    new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+  );
+
+  console.log("Refresh token u ruajt");
+} catch (err) {
+  console.log("Gabim refresh:", err);
+}
 
     res.json({
       message: "Login successful",
       token,
+      refreshToken,
       user: {
         id: user.id,
         emri: user.emri,
