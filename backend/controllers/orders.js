@@ -3,6 +3,20 @@ const connection = require("../database/database");
 exports.getAll = (req, res) => {
   Orders.findAll(data => res.json(data));
 };
+exports.getByUserId = (req, res) => {
+  const id = req.params.id;
+
+  const sql = `
+    SELECT * 
+    FROM orders 
+    WHERE user_id = ?
+  `;
+
+  connection.query(sql, [id], (err, rows) => {
+    if (err) return res.status(500).json(err);
+    res.json(rows);
+  });
+};
 exports.getByRestaurantId = (req, res) => {
   const id = req.params.id;
 

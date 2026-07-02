@@ -1,102 +1,42 @@
 const connection = require('../database/database');
 
-class Restaurants {
+class UserRoles {
 
-  // GET ALL (rating nga reviews)
-  static findAll(callback) {
-    const query = `
-      SELECT 
-        r.id,
-        r.emertimi,
-        r.qyteti,
-        COALESCE(r.status,'inactive') AS status,
-        COALESCE((
-          SELECT AVG(vleresimi)
-          FROM reviews
-          WHERE restaurant_id = r.id
-        ),0) AS vleresimi
-      FROM restaurants r
-    `;
-
-    connection.query(query, (err, rows) => {
-      if (err) throw err;
-      callback(rows);
-    });
-  }
-
-  static findById(id, callback) {
-    const query = `
-      SELECT 
-        r.id,
-        r.emertimi,
-        r.qyteti,
-        COALESCE(r.status,'inactive') AS status,
-        COALESCE((
-          SELECT AVG(vleresimi)
-          FROM reviews
-          WHERE restaurant_id = r.id
-        ),0) AS vleresimi
-      FROM restaurants r
-      WHERE r.id=?
-    `;
-
-    connection.query(query, [id], (err, rows) => {
-      if (err) throw err;
-      callback(rows[0]);
-    });
-  }
-
-  // CREATE (pa rating)
-  static create(data, callback) {
-    const query = `
-      INSERT INTO restaurants (emertimi, qyteti, status)
-      VALUES (?, ?, ?)
-    `;
-
+  static assign(user_id, role_id, callback) {
     connection.query(
-      query,
-      [
-        data.emertimi || "",
-        data.qyteti || "",
-        data.status || "active"
-      ],
+      "INSERT INTO UserRoles (user_id, role_id) VALUES (?, ?)",
+      [user_id, role_id],
       (err, result) => {
         if (err) throw err;
-
-        callback({
-          id: result.insertId,
-          ...data,
-          vleresimi: 0
-        });
+        callback({ id: result.insertId, user_id, role_id });
       }
     );
   }
 
-  static update(id, data, callback) {
-    const query = `
-      UPDATE restaurants
-      SET emertimi=?, qyteti=?, status=?
-      WHERE id=?
-    `;
-
+  static getAll(callback) {
     connection.query(
-      query,
-      [
-        data.emertimi || "",
-        data.qyteti || "",
-        data.status || "active",
-        id
-      ],
-      (err) => {
+      "SELECT * FROM UserRoles",
+      (err, rows) => {
         if (err) throw err;
-        callback();
+        callback(rows);
+      }
+    );
+  }
+
+  static findByUser(user_id, callback) {
+    connection.query(
+      "SELECT * FROM UserRoles WHERE user_id=?",
+      [user_id],
+      (err, rows) => {
+        if (err) throw err;
+        callback(rows);
       }
     );
   }
 
   static delete(id, callback) {
     connection.query(
-      "DELETE FROM restaurants WHERE id=?",
+      "DELETE FROM UserRoles WHERE id=?",
       [id],
       (err) => {
         if (err) throw err;
@@ -106,4 +46,4 @@ class Restaurants {
   }
 }
 
-module.exports = Restaurants;
+module.exports = UserRoles;

@@ -26,7 +26,6 @@ function Login() {
         "http://localhost:3000/auth/login",
         formData
       );
-
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify({...res.data.user, role: res.data.user.role?.toLowerCase()}));
 

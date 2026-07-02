@@ -52,7 +52,15 @@ class Users {
   static findByEmail(email) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT * FROM users WHERE email=?",
+        `
+        SELECT
+          u.*,
+          r.normalized_name AS role
+        FROM users u
+        LEFT JOIN userroles ur ON ur.user_id = u.id
+        LEFT JOIN roles r ON r.id = ur.role_id
+        WHERE u.email = ?
+        `,
         [email],
         (err, rows) => {
           if (err) return reject(err);
@@ -61,7 +69,6 @@ class Users {
       );
     });
   }
-
   static create(user, callback) {
     const query =
       "INSERT INTO users (emri, mbiemri, email, password_hash, status) VALUES (?, ?, ?, ?, ?)";
@@ -84,6 +91,19 @@ class Users {
         });
       }
     );
+  }
+  
+  static changePassword(id, password_hash) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "UPDATE users SET password_hash=? WHERE id=?",
+        [password_hash, id],
+        (err, result) => {
+          if (err) return reject(err);
+          resolve(result);
+        }
+      );
+    });
   }
 
   static update(user, callback) {

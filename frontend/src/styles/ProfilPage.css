@@ -13,13 +13,23 @@
   border-radius: 20px;
   padding: 30px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
 }
 
 .profile-card h1 {
   text-align: center;
   margin-bottom: 30px;
 }
-
+.profile-info,
+.password-box,
+.orders-box {
+  background: #fafafa;
+  padding: 20px;
+  border-radius: 15px;
+  border: 1px solid #eee;
+}
 .profile-info {
   margin-bottom: 30px;
 }
@@ -42,14 +52,26 @@
   padding: 12px;
   border-radius: 10px;
   border: 1px solid #ddd;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  outline: none;
+}
+
+.password-box input:focus {
+  border-color: #999;
 }
 
 .password-box button {
-  padding: 12px 20px;
+  padding: 12px 18px;
   border: none;
   border-radius: 10px;
   cursor: pointer;
+  background: #222;
+  color: white;
+  transition: 0.2s;
+}
+
+.password-box button:hover {
+  background: #444;
 }
 
 .orders-box h2 {
@@ -58,17 +80,31 @@
 
 .order-card {
   border: 1px solid #eee;
-  padding: 20px;
+  padding: 18px;
   border-radius: 15px;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
+  background: white;
+  transition: 0.2s;
+}
+
+.order-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
 .logout-btn {
   width: 100%;
-  margin-top: 30px;
+  margin-top: 10px;
   padding: 15px;
   border: none;
   border-radius: 12px;
-  font-size: 18px;
+  font-size: 16px;
   cursor: pointer;
+  background: #e74c3c;
+  color: white;
+  transition: 0.2s;
+}
+
+.logout-btn:hover {
+  background: #c0392b;
 }

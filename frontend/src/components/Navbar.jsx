@@ -1,7 +1,31 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
+  const handleDashboard = () => {
+    switch (user.role?.toLowerCase()) {
+      case "admin":
+        navigate("/admin-dashboard");
+        break;
+
+      case "owner":
+        navigate("/restaurant-dashboard");
+        break;
+
+      case "driver":
+        navigate("/driver-dashboard");
+        break;
+
+      default:
+        break;
+    }
+  };
+  const handleProfile = () => {
+    navigate("/profil");
+  };
 
   return (
     <header className="navbar">
@@ -15,9 +39,29 @@ export default function Navbar() {
           <a href="#reviews">Reviews</a>
         </nav>
 
-        <button className="menu-btn" onClick={() => setOpen(!open)}>
-          ☰
-        </button>
+        <div className="nav-right">
+          {!user ? (
+            <Link to="/login" className="login-btn">
+              Login
+            </Link>
+          ) : (
+            <>
+              <button className="profile-btn" onClick={handleProfile}>
+                <img src="/library/profile.png" alt="Profile" />
+              </button>
+
+              {user.role !== "customer" && (
+                <button className="dashboard-btn" onClick={handleDashboard}>
+                  <img src="/library/dashboard.png" alt="Dashboard" />
+                </button>
+              )}
+            </>
+          )}
+
+          <button className="menu-btn" onClick={() => setOpen(!open)}>
+            <img src="/library/menu.png" alt="Menu" />
+          </button>
+        </div>
       </div>
     </header>
   );

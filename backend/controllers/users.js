@@ -1,5 +1,5 @@
 const Users = require('../models/users');
-
+const bcrypt = require("bcryptjs");
 const MerrUserat = (req, res) => {
   Users.findAll((users) => res.json(users));
 };
@@ -48,11 +48,38 @@ const FshijUser = (req, res) => {
     res.json({ message: "User u fshi" });
   });
 };
+const changePassword = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { password } = req.body;
+
+    if (!password) {
+      return res.status(400).json({
+        message: "Password is required",
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await Users.changePassword(id, hashedPassword);
+
+    res.json({
+      message: "Password updated successfully",
+    });
+  } catch (err) {
+    console.log(err);
+
+    res.status(500).json({
+      message: "Server error",
+    });
+  }
+};
 
 module.exports = {
   MerrUserat,
   MerrUserById,
   ShtoUser,
   NdryshoUser,
-  FshijUser
+  FshijUser,
+  changePassword,
 };

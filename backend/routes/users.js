@@ -18,7 +18,10 @@ router.put(
   usersMiddleware.validateUser,
   usersController.NdryshoUser
 );
-
+router.put("/change-password/:id", (req,res,next)=>{
+    console.log("CHANGE PASSWORD HIT");
+    next();
+}, usersController.changePassword);
 router.delete('/:id', usersController.FshijUser);
 
 module.exports = router;

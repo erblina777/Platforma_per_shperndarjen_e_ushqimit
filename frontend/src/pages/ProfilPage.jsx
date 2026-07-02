@@ -8,6 +8,7 @@ export default function ProfilPage() {
 
   const [user, setUser] = useState(null);
   const [orders, setOrders] = useState([]);
+  const [showPasswordBox, setShowPasswordBox] = useState(false);
   const [newPassword, setNewPassword] = useState("");
 
   useEffect(() => {
@@ -21,7 +22,7 @@ export default function ProfilPage() {
     setUser(loggedUser);
 
     axios
-      .get(`http://localhost:3000/orders/user/${loggedUser.id}`)
+      .get(`http://localhost:3000/orders?user_id=${loggedUser.id}`)
       .then((res) => {
         setOrders(res.data);
       })
@@ -63,11 +64,11 @@ export default function ProfilPage() {
 
         <div className="profile-info">
           <p>
-            <strong>Emri:</strong> {user.emri}
+            <strong>First Name:</strong> {user.emri}
           </p>
 
           <p>
-            <strong>Mbiemri:</strong> {user.mbiemri}
+            <strong>Last Name:</strong> {user.mbiemri}
           </p>
 
           <p>
@@ -75,28 +76,51 @@ export default function ProfilPage() {
           </p>
         </div>
 
-        <div className="password-box">
-          <h2>Ndrysho Password</h2>
-
-          <input
-            type="password"
-            placeholder="Password i ri"
-            value={newPassword}
-            onChange={(e) =>
-              setNewPassword(e.target.value)
-            }
-          />
-
-          <button onClick={handlePasswordChange}>
+        {!showPasswordBox && (
+          <button
+            className="logout-btn"
+            onClick={() => setShowPasswordBox(true)}
+          >
             Change Password
           </button>
-        </div>
+        )}
+
+        {showPasswordBox && (
+          <div className="password-box">
+            <h2>Change Password</h2>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handlePasswordChange();
+              }}
+            >
+              <input
+                type="password"
+                placeholder="New Password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                autoComplete="new-password"
+              />
+
+              <button type="submit">
+                Change Password
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowPasswordBox(false)}
+              >
+                Close
+              </button>
+            </form>
+          </div>
+        )}
 
         <div className="orders-box">
           <h2>My Orders</h2>
 
           {orders.length === 0 ? (
-            <p>Nuk ka porosi.</p>
+            <p>No orders found.</p>
           ) : (
             orders.map((order) => (
               <div className="order-card" key={order.id}>

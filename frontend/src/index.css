@@ -187,7 +187,60 @@ button {
   color: #bbb;
   text-decoration: none;
 }
+.dashboard-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
+.dashboard-btn img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.dashboard-btn img:hover {
+  transform: scale(1.08);
+  transition: 0.2s;
+}
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.profile-btn,
+.dashboard-btn {
+  background: #ff4d2e;
+  border: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: 0.2s;
+}
+
+.profile-btn img,
+.dashboard-btn img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  filter: brightness(0) invert(1); /* i kthen ikonat në të bardha */
+}
+
+.profile-btn:hover,
+.dashboard-btn:hover {
+  background: #e6451f;
+  transform: translateY(-2px);
+}
 .footer-bottom {
   text-align: center;
   margin-top: 20px;
@@ -202,7 +255,29 @@ button {
   }
 
   .menu-btn {
-    display: block;
+    background: #ff4d2e;
+    border: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: 0.2s;
+  }
+
+  .menu-btn img {
+    width: 22px;
+    height: 22px;
+    filter: brightness(0) invert(1); /* e bardhë si ikonat tjera */
+  }
+
+  .menu-btn:hover {
+    background: #e6451f;
+    transform: translateY(-2px);
   }
 
   .hero-container {

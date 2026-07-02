@@ -82,6 +82,7 @@ const Login = async (req, res) => {
       user: {
         id: user.id,
         emri: user.emri,
+        mbiemri: user.mbiemri,
         email: user.email,
         role: user.role?.trim().toLowerCase()
       },
