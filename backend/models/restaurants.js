@@ -28,21 +28,51 @@ class Restaurants {
       [user_id],
       (err, rows) => {
         if (err) throw err;
-        callback(rows[0]);
+        callback(rows);
       }
     );
   }
   static create(data, callback) {
-    const query = `INSERT INTO restaurants 
-    (emertimi, pershkrimi, adresa, qyteti, user_id) 
-    VALUES (?, ?, ?, ?, ?)`;
+    const query = `
+    INSERT INTO restaurants
+    (
+    emertimi,
+    pershkrimi,
+    adresa,
+    qyteti,
+    telefoni,
+    email,
+    logo,
+    orari_hapjes,
+    orari_mbylljes,
+    vleresimi,
+    status,
+    user_id
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
 
-    connection.query(query, 
-      [data.emertimi, data.pershkrimi, data.adresa, data.qyteti, data.user_id],
+    connection.query(
+      query,
+      [
+        data.emertimi,
+        data.pershkrimi,
+        data.adresa,
+        data.qyteti,
+        data.telefoni,
+        data.email,
+        data.logo,
+        data.orari_hapjes,
+        data.orari_mbylljes,
+        data.vleresimi,
+        data.status,
+        data.user_id,
+      ],
       (err, result) => {
         if (err) throw err;
         callback(result);
-      });
+      }
+    );
   }
 
   static update(id, data, callback) {

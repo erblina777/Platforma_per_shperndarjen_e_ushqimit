@@ -33,6 +33,16 @@ class UserRoles {
       }
     );
   }
+  static updateRole(user_id, role_id, callback) {
+    connection.query(
+      "UPDATE UserRoles SET role_id=? WHERE user_id=?",
+      [role_id, user_id],
+      (err) => {
+        if (err) throw err;
+        callback();
+      }
+    );
+  }
 
   static delete(id, callback) {
     connection.query(

@@ -1,7 +1,10 @@
 const Users = require("../models/users");
+const connection = require("../database/database");
 const UserClaims = require("../models/userClaims");
 const UserTokens = require("../models/userTokens");
 const RefreshTokens = require("../models/refreshTokens");
+const Restaurants = require("../models/restaurants");
+const UserRoles = require("../models/userroles");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -42,6 +45,11 @@ const Register = async (req, res) => {
           "registration",
           "registered"
         );
+        UserRoles.assign(
+          newUser.id,
+          4,
+          () => {}
+        );
 
         res.status(201).json({
           message: "User u regjistrua",
@@ -65,6 +73,63 @@ const Register = async (req, res) => {
     });
   }
 };
+const RegisterRestaurant = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const {
+      emertimi,
+      pershkrimi,
+      adresa,
+      qyteti,
+      telefoni,
+      email,
+      orari_hapjes,
+      orari_mbylljes,
+    } = req.body;
+
+    const logo = req.file ? req.file.filename : null;
+
+    Restaurants.create(
+      {
+        emertimi,
+        pershkrimi,
+        adresa,
+        qyteti,
+        telefoni,
+        email,
+        logo,
+        orari_hapjes,
+        orari_mbylljes,
+        vleresimi: 0,
+        status: "active",
+        user_id: userId,
+      },
+      (result) => {
+
+        UserRoles.updateRole(
+          userId,
+          5,
+          () => {
+
+            return res.status(201).json({
+              message: "Restaurant created successfully",
+              restaurant: result,
+            });
+
+          }
+        );
+
+      }
+    );
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+module.exports = { RegisterRestaurant };
 
 const Login = async (req, res) => {
   try {
@@ -154,4 +219,5 @@ try {
 module.exports = {
   Register,
   Login,
+  RegisterRestaurant
 };

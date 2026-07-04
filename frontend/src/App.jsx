@@ -18,6 +18,7 @@ import RestaurantsSection from "./pages/RestaurantPage";
 import RestaurantDetailsPage from "./pages/RestaurantDetails";
 import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
+import RegisterRestaurant from "./pages/RegisterRestaurant";
 
 export default function App() {
   return (
@@ -29,49 +30,29 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-      <Route path="/profil" element={<ProfilPage />} />
-      <Route path="/menu/:id" element={<MenuItemDetails />} />
-      <Route
-  path="/restaurants/:id"
-  element={<RestaurantDetailsPage />}
-/>
-      <Route path="/restaurants" element={<RestaurantsSection />} />
-      <Route path="/restaurant-dashboard"
-        element={
+        <Route path="/profil" element={<ProfilPage />} />
+        <Route path="/menu/:id" element={<MenuItemDetails />} />
+        <Route path="/restaurants/:id" element={<RestaurantDetailsPage />} />
+        <Route path="/restaurants" element={<RestaurantsSection />} />
+        <Route path="/restaurant-dashboard" element={
           <ProtectedRoute allowedRoles={["owner"]}>
             <RestaurantDashboard />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/driver-dashboard"
-        element={
+          </ProtectedRoute>} />
+        <Route path="/driver-dashboard" element={
           <ProtectedRoute allowedRoles={["driver"]}>
             <DriverDashboard />
           </ProtectedRoute>
-        }
-      />
-      <Route
-      path="/admin-dashboard"
-      element={
+        } />
+      <Route path="/admin-dashboard" element={
         <ProtectedRoute allowedRoles={["admin"]}>
           <AdminDashboard />
         </ProtectedRoute>
-      }
-      />
+      }/>
       <Route path="/menu-items" element={<MenuItemsPage />} />
-      <Route
-  path="/order"
-  element={<OrderPage />}
-/>
-<Route
-  path="/cart"
-  element={<CartPage />}
-/>
-<Route
-  path="/checkout"
-  element={<CheckoutPage />}
- />
+      <Route path="/order" element={<OrderPage />} />
+      <Route path="/cart" element={<CartPage />} />
+      <Route path="/checkout" element={<CheckoutPage />} />
+      <Route path="/register-restaurant" element={<RegisterRestaurant />} />
       </Routes>
       
       <Footer />
