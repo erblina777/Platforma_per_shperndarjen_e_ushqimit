@@ -5,24 +5,40 @@ export default function OrdersSection({ restaurant }) {
   const [orders, setOrders] = useState([]);
   const [editId, setEditId] = useState(null);
   const [newStatus, setNewStatus] = useState("");
-
+  console.log("RESTAURANT:", restaurant);
+console.log("ORDERS:", orders);
   useEffect(() => {
-    if (!restaurant?.id) return;
+  const id = restaurant?.id;
+  if (!id) return;
 
-    axios
-      .get(`http://localhost:3000/orders/restaurant/${restaurant.id}`)
-      .then((res) => setOrders(res.data))
-      .catch((err) => console.error(err));
+  const fetchOrders = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:3000/orders/restaurant/${id}`
+        );
+
+        setOrders(res.data || []);
+      } catch (err) {
+        console.error("ORDERS ERROR:", err);
+        setOrders([]);
+      }
+    };
+
+    fetchOrders();
   }, [restaurant?.id]);
 
   const updateStatus = async (id, statusi) => {
-    await axios.put(`http://localhost:3000/orders/${id}`, { statusi });
+    try {
+      await axios.put(`http://localhost:3000/orders/${id}`, { statusi });
 
-    const res = await axios.get(
-      `http://localhost:3000/orders/restaurant/${restaurant.id}`
-    );
+      const res = await axios.get(
+        `http://localhost:3000/orders/restaurant/${restaurant.id}`
+      );
 
-    setOrders(res.data);
+      setOrders(res.data || []);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const startEdit = (order) => {
@@ -31,14 +47,19 @@ export default function OrdersSection({ restaurant }) {
   };
 
   const saveEdit = async (id) => {
-    await updateStatus(id, newStatus);
-    setEditId(null);
-    setNewStatus("");
+    try {
+      await updateStatus(id, newStatus);
+
+      setEditId(null);
+      setNewStatus("");
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   if (!restaurant) return <p>Loading...</p>;
 
-  const grouped = orders.reduce((acc, item) => {
+  const grouped = (orders || []).reduce((acc, item) => {
     if (!acc[item.id]) {
       acc[item.id] = {
         id: item.id,

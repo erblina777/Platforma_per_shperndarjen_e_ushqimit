@@ -67,8 +67,8 @@ export default function PromotionsSection({ restaurant }) {
     }
   };
 
-  if (!restaurant?.id) return <p>Loading restaurant...</p>;
-
+  if (!restaurant) return <p>Loading...</p>;
+  
   return (
     <section className="dashboard-section">
       <h2>Promotions</h2>

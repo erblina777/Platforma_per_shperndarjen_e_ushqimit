@@ -2,73 +2,74 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function MenuCategoriesSection({ restaurant }) {
+  console.log("RESTAURANT PROP:", restaurant);
   const [categories, setCategories] = useState([]);
 
   const [form, setForm] = useState({
-    emri: "",
+    emertimi: "",
     pershkrimi: "",
   });
 
   const [editId, setEditId] = useState(null);
   const [editForm, setEditForm] = useState({
-    emri: "",
+    emertimi: "",
     pershkrimi: "",
   });
 
-  const loadCategories = async (id) => {
+  const restaurantId = restaurant?.id;
+
+  // LOAD
+  const loadCategories = async () => {
+    if (!restaurantId) return;
+
     try {
       const res = await axios.get(
-        `http://localhost:3000/menucategories/restaurant/${id}`
+        `http://localhost:3000/menucategories/restaurant/${restaurantId}`
       );
 
       setCategories(res.data || []);
     } catch (err) {
-      console.error("LOAD ERROR:", err);
+      console.error(err);
       setCategories([]);
     }
   };
 
   useEffect(() => {
-    if (restaurant?.id) {
-      loadCategories(restaurant.id);
-    }
-  }, [restaurant?.id]);
+    loadCategories();
+  }, [restaurantId]);
 
+  // ADD
   const addCategory = async () => {
-    if (!form.emertimi) return;
+    if (!restaurantId || !form.emertimi) return;
 
     try {
-        const payload = {
-        restaurant_id: restaurant.id,
+      await axios.post("http://localhost:3000/menucategories", {
+        restaurant_id: restaurantId,
         emertimi: form.emertimi,
         pershkrimi: form.pershkrimi,
-        };
+      });
 
-        await axios.post(
-        "http://localhost:3000/menucategories",
-        payload
-        );
-
-        setForm({ emertimi: "", pershkrimi: "" });
-
-        loadCategories(restaurant.id);
+      setForm({ emertimi: "", pershkrimi: "" });
+      loadCategories();
     } catch (err) {
-        console.error("ADD ERROR:", err.response?.data || err);
+      console.error(err);
     }
-    };
+  };
 
+  // DELETE
   const deleteCategory = async (id) => {
     try {
       await axios.delete(
         `http://localhost:3000/menucategories/${id}`
       );
 
-      loadCategories(restaurant.id);
+      loadCategories();
     } catch (err) {
-      console.error("DELETE ERROR:", err);
+      console.error(err);
     }
   };
 
+  // EDIT
   const startEdit = (cat) => {
     setEditId(cat.id);
     setEditForm({
@@ -79,39 +80,33 @@ export default function MenuCategoriesSection({ restaurant }) {
 
   const saveEdit = async () => {
     try {
-        const payload = {
-        emertimi: editForm.emertimi,
-        pershkrimi: editForm.pershkrimi,
-        restaurant_id: restaurant.id, // 🔥 SHUMË E RËNDËSISHME
-        };
+      await axios.put(
+        `http://localhost:3000/menucategories/${editId}`,
+        {
+          emertimi: editForm.emertimi,
+          pershkrimi: editForm.pershkrimi,
+          restaurant_id: restaurantId,
+        }
+      );
 
-        await axios.put(
-    `http://localhost:3000/menucategories/${editId}`,
-    {
-        emertimi: editForm.emertimi,
-        pershkrimi: editForm.pershkrimi,
-        restaurant_id: restaurant.id
-    }
-    );
+      setEditId(null);
+      setEditForm({ emertimi: "", pershkrimi: "" });
 
-        setEditId(null);
-        setEditForm({ emertimi: "", pershkrimi: "" });
-
-        loadCategories(restaurant.id);
+      loadCategories();
     } catch (err) {
-        console.error("UPDATE ERROR:", err.response?.data || err);
+      console.error(err);
     }
-    };
+  };
 
-  if (!restaurant?.id) return <p>Loading...</p>;
+  if (!restaurantId) return <p>Loading...</p>;
 
   return (
     <section className="dashboard-section">
       <h2>Menu Categories</h2>
 
+      {/* FORM */}
       <div className="form-box">
         <input
-          name="emertimi"
           placeholder="Category name"
           value={form.emertimi}
           onChange={(e) =>
@@ -120,7 +115,6 @@ export default function MenuCategoriesSection({ restaurant }) {
         />
 
         <input
-          name="pershkrimi"
           placeholder="Description"
           value={form.pershkrimi}
           onChange={(e) =>
@@ -131,13 +125,13 @@ export default function MenuCategoriesSection({ restaurant }) {
         <button onClick={addCategory}>Add Category</button>
       </div>
 
+      {/* LIST */}
       <div className="promo-grid">
         {categories.length === 0 ? (
           <p>No categories found</p>
         ) : (
           categories.map((cat) => (
             <div className="promo-card" key={cat.id}>
-
               {editId === cat.id ? (
                 <>
                   <input
@@ -167,7 +161,6 @@ export default function MenuCategoriesSection({ restaurant }) {
                 </>
               ) : (
                 <>
-                  {/* VIEW MODE */}
                   <h3>{cat.emertimi}</h3>
                   <p>{cat.pershkrimi}</p>
 
@@ -180,7 +173,6 @@ export default function MenuCategoriesSection({ restaurant }) {
                   </button>
                 </>
               )}
-
             </div>
           ))
         )}

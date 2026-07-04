@@ -49,6 +49,12 @@ export default function CreateRestaurant() {
       );
 
       alert("Restaurant created successfully!");
+      const updatedUser = {
+        ...JSON.parse(localStorage.getItem("user")),
+        role: "owner"
+      };
+
+      localStorage.setItem("user", JSON.stringify(updatedUser));
       navigate("/restaurant-dashboard");
 
     } catch (err) {

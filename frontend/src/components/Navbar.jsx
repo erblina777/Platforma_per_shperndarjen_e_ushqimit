@@ -49,6 +49,9 @@ export default function Navbar() {
               <button className="profile-btn" onClick={handleProfile}>
                 <img src="/library/profile.png" alt="Profile" />
               </button>
+              <button className="cart-btn" onClick={() => navigate("/cart")}>
+                <img src="/library/cart.png" alt="Cart" />
+              </button>
 
               {user.role !== "customer" && (
                 <button className="dashboard-btn" onClick={handleDashboard}>

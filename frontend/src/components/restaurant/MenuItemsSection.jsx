@@ -47,11 +47,12 @@ export default function MenuItemsSection({ restaurant }) {
   };
 
   useEffect(() => {
-    if (restaurant?.id) {
-      loadCategories(restaurant.id);
-      loadItems(restaurant.id);
-    }
-  }, [restaurant?.id]);
+    const id = restaurant?.id;
+    if (!id) return;
+
+    loadCategories(id);
+    loadItems(id);
+  }, [restaurant]);
 
   // ================= CREATE =================
   const addItem = async () => {
@@ -120,7 +121,7 @@ export default function MenuItemsSection({ restaurant }) {
   };
 
   // ================= UI =================
-  if (!restaurant?.id) return <p>Loading...</p>;
+  if (!restaurant) return <p>Loading...</p>;
 
   return (
     <section className="dashboard-section">

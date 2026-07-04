@@ -138,24 +138,14 @@ class Orders {
     const q = `
       UPDATE orders
       SET
-        user_id = ?,
-        restaurant_id = ?,
-        adresa_dorezimit = ?,
-        shuma_totale = ?,
-        statusi = ?,
-        metoda_pageses = ?
+        statusi = ?
       WHERE id = ?
     `;
 
     connection.query(
       q,
       [
-        data.user_id,
-        data.restaurant_id,
-        data.adresa_dorezimit,
-        data.shuma_totale,
         data.statusi,
-        data.metoda_pageses,
         id
       ],
       (err) => {
@@ -163,7 +153,7 @@ class Orders {
 
         cb({
           id,
-          ...data
+          statusi: data.statusi
         });
       }
     );

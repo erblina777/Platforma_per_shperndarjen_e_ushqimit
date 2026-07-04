@@ -70,6 +70,53 @@ body {
   gap: 40px;
 }
 
+.cart-btn {
+  background: #ff4d2e;
+  border: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: 0.2s;
+}
+
+.cart-btn img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+.cart-btn:hover {
+  background: #e6451f;
+  transform: translateY(-2px);
+}
+
+.login-btn {
+  background: #ff4d2e;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: 0.2s;
+}
+
+.login-btn:hover {
+  background: #e6451f;
+  transform: translateY(-2px);
+}
+
 /* TEXT LEFT */
 .hero-text {
   flex: 1;

@@ -6,15 +6,19 @@ export default function useRestaurant() {
 
   useEffect(() => {
     const stored = localStorage.getItem("user");
-    if(!stored) return;
+    if (!stored) return;
+
     const user = JSON.parse(stored);
     if (!user?.id) return;
 
     axios
       .get(`http://localhost:3000/restaurants/user/${user.id}`)
       .then((res) => {
-        setRestaurant(res.data);
-        localStorage.setItem("restaurant", JSON.stringify(res.data));
+        const data = Array.isArray(res.data) ? res.data[0] : res.data;
+
+        setRestaurant(data);
+
+        localStorage.setItem("restaurant", JSON.stringify(data));
       })
       .catch(console.error);
   }, []);
