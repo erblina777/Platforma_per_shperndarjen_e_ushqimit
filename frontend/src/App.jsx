@@ -53,6 +53,7 @@ export default function App() {
       <Route path="/cart" element={<CartPage />} />
       <Route path="/checkout" element={<CheckoutPage />} />
       <Route path="/register-restaurant" element={<RegisterRestaurant />} />
+      <Route path="/menu-items/restaurant/:id" element={<MenuItemsPage />} />
       </Routes>
       
       <Footer />

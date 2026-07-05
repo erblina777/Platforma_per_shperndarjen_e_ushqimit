@@ -46,14 +46,15 @@ export default function RestaurantsPage() {
             <div className="info">
               <span>📍 {r.qyteti || "-"}</span>
               <span>📞 {r.telefoni || "-"}</span>
-              <span>⭐ {r.vleresimi ?? "0"}</span>
             </div>
 
             {/* BUTTONS */}
             <div className="restaurant-buttons">
 
               {/* VIEW MENU (SI E KE PAS) */}
-              <button onClick={() => navigate("/menu-items")}>
+              <button
+                onClick={() => navigate(`/menu-items/restaurant/${r.id}`)}
+              >
                 View Menu
               </button>
 

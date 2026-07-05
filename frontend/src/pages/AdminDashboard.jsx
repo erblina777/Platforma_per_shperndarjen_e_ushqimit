@@ -4,8 +4,6 @@ import RestaurantsSection from "../components/admin/RestaurantsSection";
 import OrdersSection from "../components/admin/OrdersSection";
 import DriversSection from "../components/admin/DriversSection";
 import DeliveriesSection from "../components/admin/DeliveriesSection";
-import ReviewsSection from "../components/admin/ReviewsSection";
-
 import "../styles/AdminDashboard.css";
 
 export default function AdminDashboard() {

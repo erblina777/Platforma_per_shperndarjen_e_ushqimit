@@ -36,7 +36,6 @@ export default function Navbar() {
         <nav className={`nav-links ${open ? "open" : ""}`}>
           <a href="restaurants">Restaurants</a>
           <a href="/menu-items">Menu</a>
-          <a href="#reviews">Reviews</a>
         </nav>
 
         <div className="nav-right">
@@ -52,6 +51,14 @@ export default function Navbar() {
               <button className="cart-btn" onClick={() => navigate("/cart")}>
                 <img src="/library/cart.png" alt="Cart" />
               </button>
+              {user?.role === "customer" && (
+                <button
+                  className="add-restaurant-btn"
+                  onClick={() => navigate("/register-restaurant")}
+                >
+                  <img src="/library/registerrestaurant.png" alt="Register Restaurant" />
+                </button>
+              )}
 
               {user.role !== "customer" && (
                 <button className="dashboard-btn" onClick={handleDashboard}>

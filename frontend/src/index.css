@@ -260,23 +260,23 @@ button {
   gap: 15px;
 }
 .profile-btn,
-.dashboard-btn {
+.dashboard-btn,
+.add-restaurant-btn {
   background: #ff4d2e;
   border: none;
   width: 42px;
   height: 42px;
   border-radius: 10px;
   cursor: pointer;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   transition: 0.2s;
 }
 
 .profile-btn img,
-.dashboard-btn img {
+.dashboard-btn img,
+.add-restaurant-btn img {
   width: 22px;
   height: 22px;
   object-fit: contain;
@@ -284,7 +284,8 @@ button {
 }
 
 .profile-btn:hover,
-.dashboard-btn:hover {
+.dashboard-btn:hover,
+.add-restaurant-btn:hover {
   background: #e6451f;
   transform: translateY(-2px);
 }

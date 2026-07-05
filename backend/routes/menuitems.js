@@ -1,13 +1,11 @@
-const router = require('express').Router();
-const ctrl = require('../controllers/menuitems');
-const upload = require("../middlewares/upload");
-
-router.get('/', ctrl.getAll);
-router.get("/restaurant/:restaurantId", ctrl.getByRestaurantId);
-router.get('/:id', ctrl.getById);
-router.post("/",upload.single("foto"), ctrl.create);
-router.put("/:id",upload.single("foto"), ctrl.update);
-
-router.delete("/:id", ctrl.delete);
+const express = require("express");
+const router = express.Router();
+const menuItemsController = require("../controllers/menuitems");
+router.get("/", menuItemsController.getAll);
+router.get("/restaurant/:restaurantId", menuItemsController.getByRestaurantId);
+router.get("/:id", menuItemsController.getById);
+router.post("/", menuItemsController.create);
+router.put("/:id", menuItemsController.update);
+router.delete("/:id", menuItemsController.delete);
 
 module.exports = router;

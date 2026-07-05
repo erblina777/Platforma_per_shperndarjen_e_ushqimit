@@ -16,25 +16,16 @@ class MenuItems {
         ON mc.restaurant_id = r.id
       WHERE 1=1
     `;
-
     const values = [];
-
-    // SEARCH
 
     if (filters.search && filters.search.trim() !== "") {
       query += ` AND mi.emertimi LIKE ?`;
       values.push(`%${filters.search}%`);
     }
-
-    // MIN PRICE
-
     if (filters.minPrice !== "" && filters.minPrice != null) {
       query += ` AND mi.cmimi >= ?`;
       values.push(Number(filters.minPrice));
     }
-
-    // MAX PRICE
-
     if (filters.maxPrice !== "" && filters.maxPrice != null) {
       query += ` AND mi.cmimi <= ?`;
       values.push(Number(filters.maxPrice));
@@ -50,21 +41,43 @@ class MenuItems {
       cb(rows);
     });
   }
-  static findByRestaurantId(restaurantId, cb) {
-    connection.query(
-      `
-      SELECT mi.*
+  static findByRestaurantId(filters, cb) {
+    let query = `
+      SELECT 
+        mi.*,
+        mc.emertimi AS category_name,
+        r.id AS restaurant_id,
+        r.emertimi AS restaurant_name
       FROM menuitems mi
       JOIN menucategories mc 
         ON mi.category_id = mc.id
+      JOIN restaurants r 
+        ON mc.restaurant_id = r.id
       WHERE mc.restaurant_id = ?
-      `,
-      [restaurantId],
-      (err, rows) => {
-        if (err) throw err;
-        cb(rows);
+    `;
+
+    const values = [filters.restaurantId];
+
+    if (filters.search && filters.search.trim() !== "") {
+      query += ` AND mi.emertimi LIKE ?`;
+      values.push(`%${filters.search}%`);
+    }
+    if (filters.minPrice !== "" && filters.minPrice != null) {
+      query += ` AND mi.cmimi >= ?`;
+      values.push(Number(filters.minPrice));
+    }
+    if (filters.maxPrice !== "" && filters.maxPrice != null) {
+      query += ` AND mi.cmimi <= ?`;
+      values.push(Number(filters.maxPrice));
+    }
+    connection.query(query, values, (err, rows) => {
+      if (err) {
+        console.log(err);
+        return cb([]);
       }
-    );
+
+      cb(rows);
+    });
   }
   static findById(id, cb) {
     connection.query("SELECT * FROM menuitems WHERE id=?", [id], (err, rows) => {
@@ -101,6 +114,7 @@ class MenuItems {
       cb({ id, ...data });
     });
   }
+
 
   static delete(id, cb) {
     connection.query("DELETE FROM menuitems WHERE id=?", [id], cb);

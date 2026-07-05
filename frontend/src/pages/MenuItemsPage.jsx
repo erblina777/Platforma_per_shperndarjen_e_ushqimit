@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import "../styles/MenuItemsPage.css";
 
 export default function MenuItemsPage() {
   const navigate = useNavigate();
+  const { id } = useParams();
   const [items, setItems] = useState([]);
 
   const [filters, setFilters] = useState({
@@ -29,9 +30,15 @@ export default function MenuItemsPage() {
 
   const fetchItems = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/menuitems", {
-        params: filters,
-      });
+      const res = await axios.get(
+        "http://localhost:3000/menuitems",
+        {
+          params: {
+            ...filters,
+            restaurantId: id
+          }
+        }
+      );
 
       setItems(res.data || []);
     } catch (err) {

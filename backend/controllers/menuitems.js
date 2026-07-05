@@ -13,10 +13,16 @@ exports.getAll = (req, res) => {
   });
 };
 exports.getByRestaurantId = (req, res) => {
-  MenuItems.findByRestaurantId(
-    req.params.restaurantId,
-    (data) => res.json(data)
-  );
+  const filters = {
+    restaurantId: req.params.restaurantId,
+    search: req.query.search,
+    minPrice: req.query.minPrice,
+    maxPrice: req.query.maxPrice
+  };
+
+  MenuItems.findByRestaurantId(filters, (data) => {
+    res.json(data);
+  });
 };
 exports.getById = (req, res) => {
   MenuItems.findById(req.params.id, data => res.json(data));
