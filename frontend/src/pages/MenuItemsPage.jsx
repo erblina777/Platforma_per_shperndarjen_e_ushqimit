@@ -113,10 +113,9 @@ export default function MenuItemsPage() {
               style={{ cursor: "pointer" }}
             >
               <img
-                src={`http://localhost:3000/uploads/${item.foto}`}
-                alt={item.emertimi}
-              />
-
+src={`http://localhost:3000/uploads/${item.foto}`}
+  alt={item.emertimi}
+/>
               <div className="menu-item-content">
                 <h2>{item.emertimi}</h2>
                 <p>{item.pershkrimi}</p>

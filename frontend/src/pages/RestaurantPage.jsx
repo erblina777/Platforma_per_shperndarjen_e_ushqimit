@@ -26,9 +26,9 @@ export default function RestaurantsPage() {
             <div className="image-box">
               {r.logo ? (
                 <img
-                  src={`/images/restaurants/${r.logo}`}
-                  alt={r.emertimi}
-                />
+  src={`http://localhost:3000/uploads/${r.logo}`}
+  alt={r.emertimi}
+/>
               ) : (
                 <div className="no-image">No Image</div>
               )}
