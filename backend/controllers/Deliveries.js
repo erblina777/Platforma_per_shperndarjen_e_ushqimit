@@ -1,54 +1,69 @@
 const Deliveries = require('../models/deliveries');
 
 const MerrDeliveries = (req, res) => {
-  Deliveries.findAll((data) => res.json(data));
-};
-
-const MerrDeliveryById = (req, res) => {
-  Deliveries.findById(req.params.id, (data) => {
-    if (!data) return res.status(404).send("Delivery nuk u gjet");
+  Deliveries.findAll((err, data) => {
+    if (err) return res.status(500).json(err);
     res.json(data);
   });
 };
 
 const ShtoDelivery = (req, res) => {
-  const delivery = new Deliveries(
-    null,
-    req.body.order_id,
-    req.body.driver_id,
-    req.body.statusi,
-    req.body.data_marrjes,
-    req.body.data_dorezimit,
-    req.body.koha_vleresuar
-  );
+  const data = req.body;
 
-  Deliveries.create(delivery, (data) => res.status(201).json(data));
+  Deliveries.create(data, (err, delivery) => {
+    if (err) return res.status(500).json(err);
+
+    Deliveries.findOrderStatusUpdate(
+      data.order_id,
+      data.statusi,
+      (err2) => {
+        if (err2) return res.status(500).json(err2);
+        res.status(201).json(delivery);
+      }
+    );
+  });
+};
+
+const MerrDeliveryById = (req, res) => {
+  Deliveries.findById(req.params.id, (err, data) => {
+    if (err) return res.status(500).json(err);
+    if (!data) return res.status(404).json({ message: "Not found" });
+    res.json(data);
+  });
 };
 
 const NdryshoDelivery = (req, res) => {
-  const delivery = new Deliveries(
-    req.params.id,
-    req.body.order_id,
-    req.body.driver_id,
-    req.body.statusi,
-    req.body.data_marrjes,
-    req.body.data_dorezimit,
-    req.body.koha_vleresuar
-  );
+  const id = req.params.id;
+  const data = req.body;
 
-  Deliveries.update(delivery, (data) => res.json(data));
+  Deliveries.update(id, data, (err, updated) => {
+    if (err) return res.status(500).json(err);
+
+    Deliveries.findOrderStatusUpdate(
+      data.order_id,
+      data.statusi,
+      (err2) => {
+        if (err2) return res.status(500).json(err2);
+        res.json(updated);
+      }
+    );
+  });
 };
 
 const FshijDelivery = (req, res) => {
-  Deliveries.deleteById(req.params.id, () => {
-    res.json({ message: "Delivery u fshi" });
+  const id = req.params.id;
+
+  Deliveries.delete(id, (err) => {
+    if (err) return res.status(500).json(err);
+
+    res.json({ message: "Deleted" });
   });
 };
 
 module.exports = {
   MerrDeliveries,
-  MerrDeliveryById,
   ShtoDelivery,
   NdryshoDelivery,
-  FshijDelivery
+  FshijDelivery,
+  MerrDeliveryById
 };

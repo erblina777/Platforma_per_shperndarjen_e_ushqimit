@@ -3,78 +3,29 @@ import axios from "axios";
 
 export default function OrdersSection() {
   const [orders, setOrders] = useState([]);
-  const [showForm, setShowForm] = useState(false);
-  const [editingOrder, setEditingOrder] = useState(null);
-
-  const [formData, setFormData] = useState({
-    user_id: "",
-    restaurant_id: "",
-    adresa_dorezimit: "",
-    shuma_totale: "",
-    statusi: "",
-    metoda_pageses: ""
-  });
+  const [users, setUsers] = useState([]);
+  const [restaurants, setRestaurants] = useState([]);
 
   useEffect(() => {
     loadOrders();
+    loadUsers();
+    loadRestaurants();
   }, []);
+  
+  const loadUsers = async () => {
+    const res = await axios.get("http://localhost:3000/users");
+    setUsers(res.data);
+  };
 
+  const loadRestaurants = async () => {
+    const res = await axios.get("http://localhost:3000/restaurants");
+    setRestaurants(res.data);
+  };
   const loadOrders = () => {
     axios
       .get("http://localhost:3000/orders")
       .then(res => setOrders(res.data))
       .catch(err => console.log(err));
-  };
-
-  const openInsert = () => {
-    setEditingOrder(null);
-
-    setFormData({
-      user_id: "",
-      restaurant_id: "",
-      adresa_dorezimit: "",
-      shuma_totale: "",
-      statusi: "",
-      metoda_pageses: ""
-    });
-
-    setShowForm(true);
-  };
-
-  const openEdit = (order) => {
-    setEditingOrder(order);
-
-    setFormData({
-      user_id: order.user_id || "",
-      restaurant_id: order.restaurant_id || "",
-      adresa_dorezimit: order.adresa_dorezimit || "",
-      shuma_totale: order.shuma_totale || "",
-      statusi: order.statusi || "",
-      metoda_pageses: order.metoda_pageses || ""
-    });
-
-    setShowForm(true);
-  };
-
-  const handleSave = async () => {
-    try {
-      if (editingOrder) {
-        await axios.put(
-          `http://localhost:3000/orders/${editingOrder.id}`,
-          formData
-        );
-      } else {
-        await axios.post(
-          "http://localhost:3000/orders",
-          formData
-        );
-      }
-
-      setShowForm(false);
-      loadOrders();
-    } catch (err) {
-      console.log(err.response?.data || err.message);
-    }
   };
 
   const deleteOrder = async (id) => {
@@ -86,10 +37,6 @@ export default function OrdersSection() {
     <section className="dashboard-section">
       <h2>Orders</h2>
 
-      <button onClick={openInsert} className="edit-btn">
-        + Add Order
-      </button>
-
       <div className="table-wrapper">
         <table className="admin-table">
           <thead>
@@ -97,6 +44,8 @@ export default function OrdersSection() {
               <th>ID</th>
               <th>User</th>
               <th>Restaurant</th>
+              <th>Address</th>
+              <th>Items</th>
               <th>Total</th>
               <th>Status</th>
               <th>Payment</th>
@@ -105,104 +54,42 @@ export default function OrdersSection() {
           </thead>
 
           <tbody>
-            {orders.map(order => (
+            {orders.map((order) => (
               <tr key={order.id}>
                 <td>{order.id}</td>
-                <td>{order.user_id}</td>
-                <td>{order.restaurant_id}</td>
+
+                <td>{order.user_name || order.user_id}</td>
+
+                <td>{order.restaurant_name || order.restaurant_id}</td>
+
+                <td>{order.adresa_dorezimit}</td>
+
+                <td>
+                  {order.items?.map((item) => (
+                    <div key={item.id}>
+                      {item.name} x{item.quantity} (€{item.price})
+                    </div>
+                  ))}
+                </td>
+
                 <td>€{order.shuma_totale}</td>
-                <td>{order.statusi}</td>
+
+                <td>
+                  <span className={`status-${order.statusi?.toLowerCase()}`}>
+                    {order.statusi}
+                  </span>
+                </td>
+
                 <td>{order.metoda_pageses}</td>
 
                 <td>
-                  <div className="action-buttons">
-                    <button
-                      className="edit-btn"
-                      onClick={() => openEdit(order)}
-                    >
-                      Edit
-                    </button>
-
-                    <button
-                      className="delete-btn"
-                      onClick={() => deleteOrder(order.id)}
-                    >
-                      Delete
-                    </button>
-                  </div>
+                  <button onClick={() => deleteOrder(order.id)}>Delete</button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-
-      {showForm && (
-        <div className="form-box">
-          <h3>{editingOrder ? "Edit Order" : "Add Order"}</h3>
-
-          <input
-            placeholder="User ID"
-            value={formData.user_id}
-            onChange={(e) =>
-              setFormData({ ...formData, user_id: e.target.value })
-            }
-          />
-
-          <input
-            placeholder="Restaurant ID"
-            value={formData.restaurant_id}
-            onChange={(e) =>
-              setFormData({ ...formData, restaurant_id: e.target.value })
-            }
-          />
-
-          <input
-            placeholder="Delivery Address"
-            value={formData.adresa_dorezimit}
-            onChange={(e) =>
-              setFormData({ ...formData, adresa_dorezimit: e.target.value })
-            }
-          />
-
-          <input
-            placeholder="Total Amount"
-            value={formData.shuma_totale}
-            onChange={(e) =>
-              setFormData({ ...formData, shuma_totale: e.target.value })
-            }
-          />
-
-          <input
-            placeholder="Status"
-            value={formData.statusi}
-            onChange={(e) =>
-              setFormData({ ...formData, statusi: e.target.value })
-            }
-          />
-
-          <input
-            placeholder="Payment Method"
-            value={formData.metoda_pageses}
-            onChange={(e) =>
-              setFormData({ ...formData, metoda_pageses: e.target.value })
-            }
-          />
-
-          <div className="action-buttons">
-            <button className="edit-btn" onClick={handleSave}>
-              Save
-            </button>
-
-            <button
-              className="delete-btn"
-              onClick={() => setShowForm(false)}
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
     </section>
   );
 }

@@ -5,7 +5,7 @@ export default function DriversSection() {
   const [drivers, setDrivers] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingDriver, setEditingDriver] = useState(null);
-
+  const [users, setUsers] = useState([]);
   const [formData, setFormData] = useState({
     user_id: "",
     automjeti: "",
@@ -17,8 +17,13 @@ export default function DriversSection() {
 
   useEffect(() => {
     loadDrivers();
+    loadUsers();
   }, []);
 
+  const loadUsers = async () => {
+    const res = await axios.get("http://localhost:3000/users");
+    setUsers(res.data);
+  };
   const loadDrivers = () => {
     axios
       .get("http://localhost:3000/drivers")
@@ -92,73 +97,16 @@ export default function DriversSection() {
       <button onClick={openInsert}>
         + Add Driver
       </button>
-
-      <div className="table-wrapper">
-
-        <table className="admin-table">
-
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>User ID</th>
-              <th>Vehicle</th>
-              <th>Plate</th>
-              <th>Zone</th>
-              <th>Status</th>
-              <th>Rating</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-
-            {drivers.map(driver => (
-              <tr key={driver.id}>
-
-                <td>{driver.id}</td>
-                <td>{driver.user_id}</td>
-                <td>{driver.automjeti}</td>
-                <td>{driver.targa}</td>
-                <td>{driver.zona}</td>
-                <td>{driver.statusi}</td>
-                <td>{driver.vleresimi}</td>
-
-                <td>
-
-                  <button
-                    onClick={() => openEdit(driver)}
-                  >
-                    Edit
-                  </button>
-
-                  <button
-                    className="delete-btn"
-                    onClick={() => deleteDriver(driver.id)}
-                  >
-                    Delete
-                  </button>
-
-                </td>
-
-              </tr>
-            ))}
-
-          </tbody>
-
-        </table>
-
-      </div>
-
       {showForm && (
 
-        <div>
+        <div className="form-box">
 
           <h3>
             {editingDriver ? "Edit Driver" : "Add Driver"}
           </h3>
 
-          <input
-            placeholder="User ID"
+          <label>Driver User</label>
+          <select
             value={formData.user_id}
             onChange={(e) =>
               setFormData({
@@ -166,7 +114,17 @@ export default function DriversSection() {
                 user_id: e.target.value
               })
             }
-          />
+          >
+            <option value="">Select User</option>
+
+            {users
+              .filter(u => u.role === "driver" || !u.role)
+              .map(u => (
+                <option key={u.id} value={u.id}>
+                  {u.emri} {u.mbiemri}
+                </option>
+              ))}
+          </select>
 
           <input
             placeholder="Vehicle"
@@ -201,8 +159,7 @@ export default function DriversSection() {
             }
           />
 
-          <input
-            placeholder="Status"
+          <select
             value={formData.statusi}
             onChange={(e) =>
               setFormData({
@@ -210,18 +167,15 @@ export default function DriversSection() {
                 statusi: e.target.value
               })
             }
-          />
+          >
+            <option value="active">Active</option>
+            <option value="offline">Offline</option>
+            <option value="busy">Busy</option>
+          </select>
 
-          <input
-            placeholder="Rating"
-            value={formData.vleresimi}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                vleresimi: e.target.value
-              })
-            }
-          />
+          <div>
+            Rating: ⭐ {editingDriver?.vleresimi || 0}
+          </div>
 
           <button onClick={handleSave}>
             Save
@@ -234,7 +188,67 @@ export default function DriversSection() {
         </div>
 
       )}
+      <div className="table-wrapper">
 
+        <table className="admin-table">
+
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Vehicle</th>
+              <th>Plate</th>
+              <th>Zone</th>
+              <th>Status</th>
+              <th>Rating</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            {drivers.map(driver => (
+              <tr key={driver.id}>
+
+                <td>{driver.id}</td>
+                <td>
+                  {users.find(u => u.id === driver.user_id)?.emri || "Unknown"}
+                </td>
+                <td>{driver.automjeti}</td>
+                <td>{driver.targa}</td>
+                <td>{driver.zona}</td>
+                <td>
+                  <span className={`status-${driver.statusi}`}>
+                    {driver.statusi}
+                  </span>
+                </td>
+                <td>{driver.vleresimi}</td>
+
+                <td>
+
+                  <button
+                    onClick={() => openEdit(driver)}
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    className="delete-btn"
+                    onClick={() => deleteDriver(driver.id)}
+                  >
+                    Delete
+                  </button>
+
+                </td>
+
+              </tr>
+            ))}
+
+          </tbody>
+
+        </table>
+
+      </div>
     </section>
   );
 }

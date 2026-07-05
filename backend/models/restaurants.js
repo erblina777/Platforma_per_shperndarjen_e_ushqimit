@@ -10,14 +10,35 @@ class Restaurants {
   }
 
   static findAll(callback) {
-    connection.query("SELECT * FROM restaurants", (err, rows) => {
+    const query = `
+      SELECT
+        r.*,
+        CONCAT(u.emri, ' ', u.mbiemri) AS owner,
+        u.email AS owner_email
+      FROM restaurants r
+      LEFT JOIN users u
+        ON r.user_id = u.id
+    `;
+
+    connection.query(query, (err, rows) => {
       if (err) throw err;
       callback(rows);
     });
   }
 
   static findById(id, callback) {
-    connection.query("SELECT * FROM restaurants WHERE id=?", [id], (err, rows) => {
+    const query = `
+      SELECT
+        r.*,
+        CONCAT(u.emri, ' ', u.mbiemri) AS owner,
+        u.email AS owner_email
+      FROM restaurants r
+      LEFT JOIN users u
+        ON r.user_id = u.id
+      WHERE r.id = ?
+    `;
+
+    connection.query(query, [id], (err, rows) => {
       if (err) throw err;
       callback(rows[0]);
     });
@@ -76,14 +97,46 @@ class Restaurants {
   }
 
   static update(id, data, callback) {
-    const query = `UPDATE restaurants SET emertimi=?, pershkrimi=?, adresa=?, qyteti=? WHERE id=?`;
+    const query = `
+      UPDATE restaurants 
+      SET 
+        emertimi = ?,
+        pershkrimi = ?,
+        adresa = ?,
+        qyteti = ?,
+        telefoni = ?,
+        email = ?,
+        logo = ?,
+        orari_hapjes = ?,
+        orari_mbylljes = ?,
+        vleresimi = ?,
+        status = ?,
+        user_id = ?
+      WHERE id = ?
+    `;
 
-    connection.query(query,
-      [data.emertimi, data.pershkrimi, data.adresa, data.qyteti, id],
-      (err) => {
+    connection.query(
+      query,
+      [
+        data.emertimi,
+        data.pershkrimi,
+        data.adresa,
+        data.qyteti,
+        data.telefoni,
+        data.email,
+        data.logo,
+        data.orari_hapjes,
+        data.orari_mbylljes,
+        data.vleresimi,
+        data.status,
+        data.user_id,
+        id
+      ],
+      (err, result) => {
         if (err) throw err;
-        callback();
-      });
+        callback(result);
+      }
+    );
   }
 
   static delete(id, callback) {

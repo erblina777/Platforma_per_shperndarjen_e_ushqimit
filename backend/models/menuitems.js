@@ -42,14 +42,10 @@ class MenuItems {
 
     connection.query(query, values, (err, rows) => {
 
-      console.log("QUERY EXECUTED");
-
       if (err) {
         console.log(err);
         return cb([]);
       }
-
-      console.log(rows);
 
       cb(rows);
     });

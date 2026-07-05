@@ -1,3 +1,6 @@
+const Promotions = require("../models/promotions");
+const MenuItems = require("../models/menuitems");
+const MenuCategories = require("../models/menucategories");
 const Restaurants = require('../models/restaurants');
 
 exports.getAll = (req, res) => {
@@ -26,7 +29,23 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-  Restaurants.delete(req.params.id, () => {
-    res.json({ message: "Deleted" });
+  const id = req.params.id;
+
+  Promotions.deleteByRestaurantId(id, (err) => {
+    if (err) return res.status(500).json(err);
+
+    MenuItems.deleteByRestaurantId(id, (err2) => {
+      if (err2) return res.status(500).json(err2);
+
+      MenuCategories.deleteByRestaurantId(id, (err3) => {
+        if (err3) return res.status(500).json(err3);
+
+        Restaurants.delete(id, (err4) => {
+          if (err4) return res.status(500).json(err4);
+
+          res.json({ message: "Deleted successfully" });
+        });
+      });
+    });
   });
 };

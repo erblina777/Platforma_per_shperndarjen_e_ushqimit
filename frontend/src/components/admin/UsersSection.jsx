@@ -84,7 +84,76 @@ export default function UsersSection() {
       <h2>Users</h2>
 
       <button onClick={openInsert}>+ Add User</button>
+      {showForm && (
+        <div className="form-box">
+          <h3>
+            {editingUser ? "Edit User" : "Add User"}
+          </h3>
 
+          <input
+            type="text"
+            name="emri"
+            placeholder="First Name"
+            value={formData.emri}
+            onChange={(e) =>
+              setFormData({ ...formData, emri: e.target.value })
+            }
+          />
+
+          <input
+            type="text"
+            name="mbiemri"
+            placeholder="Last Name"
+            value={formData.mbiemri}
+            onChange={(e) =>
+              setFormData({ ...formData, mbiemri: e.target.value })
+            }
+          />
+
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
+          />
+
+          <input
+            type="text"
+            name="phone_number"
+            placeholder="Phone Number"
+            value={formData.phone_number}
+            onChange={(e) =>
+              setFormData({ ...formData, phone_number: e.target.value })
+            }
+          />
+          
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={(e) =>
+              setFormData({ ...formData, password: e.target.value })
+            }
+          />
+
+          <div className="action-buttons">
+            <button onClick={handleSave} className="edit-btn">
+              Save
+            </button>
+
+            <button
+              onClick={() => setShowForm(false)}
+              className="delete-btn"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
       <div className="table-wrapper">
         <table className="admin-table">
           <thead>
@@ -122,65 +191,6 @@ export default function UsersSection() {
           </tbody>
         </table>
       </div>
-
-      {showForm && (
-        <div className="form-box">
-          <h3>
-            {editingUser ? "Edit User" : "Add User"}
-          </h3>
-
-          <input
-            placeholder="Emri"
-            value={formData.emri}
-            onChange={(e) =>
-              setFormData({ ...formData, emri: e.target.value })
-            }
-          />
-
-          <input
-            placeholder="Mbiemri"
-            value={formData.mbiemri}
-            onChange={(e) =>
-              setFormData({ ...formData, mbiemri: e.target.value })
-            }
-          />
-
-          <input
-            placeholder="Email"
-            value={formData.email}
-            onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
-            }
-          />
-
-          <input
-            placeholder="Phone"
-            value={formData.phone_number}
-            onChange={(e) =>
-              setFormData({ ...formData, phone_number: e.target.value })
-            }
-          />
-
-          <input
-            type="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={(e) =>
-              setFormData({ ...formData, password: e.target.value })
-            }
-          />
-
-          <div className="action-buttons">
-            <button onClick={handleSave} className="edit-btn">
-              Save
-            </button>
-
-            <button onClick={() => setShowForm(false)} className="delete-btn">
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
     </section>
   );
 }

@@ -22,6 +22,7 @@ class Users {
           row.mbiemri,
           row.email,
           row.password_hash,
+          row.phone_number,
           row.status
         )
       );
@@ -43,6 +44,7 @@ class Users {
         row.mbiemri,
         row.email,
         row.password_hash,
+        row.phone_number, 
         row.status
       );
 
@@ -117,6 +119,7 @@ class Users {
         user.phone_number,
         user.email,
         user.password_hash,
+        user.phone_number,
         user.status,
         user.id
       ],
@@ -128,10 +131,14 @@ class Users {
   }
 
   static deleteById(id, callback) {
-    connection.query("DELETE FROM users WHERE id=?", [id], (err) => {
-      if (err) throw err;
-      callback();
-    });
+    connection.query(
+      "DELETE FROM users WHERE id=?",
+      [id],
+      (err) => {
+        if (err) return callback(err);
+        callback(null);
+      }
+    );
   }
 }
 

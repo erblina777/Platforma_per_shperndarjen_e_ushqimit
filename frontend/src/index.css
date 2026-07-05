@@ -299,6 +299,24 @@ button {
 @media (max-width: 768px) {
   .nav-links {
     display: none;
+    position: absolute;
+    top: 75px;
+    left: 0;
+    width: 100%;
+    background: white;
+    flex-direction: column;
+    padding: 15px 0;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    gap: 0;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-links a {
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
   }
 
   .menu-btn {
@@ -308,11 +326,9 @@ button {
     height: 42px;
     border-radius: 10px;
     cursor: pointer;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     transition: 0.2s;
   }
 

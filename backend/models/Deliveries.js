@@ -1,72 +1,79 @@
 const db = require('../database/database');
 
 class Deliveries {
-  constructor(id, order_id, driver_id, statusi, data_marrjes, data_dorezimit, koha_vleresuar) {
-    this.id = id;
-    this.order_id = order_id;
-    this.driver_id = driver_id;
-    this.statusi = statusi;
-    this.data_marrjes = data_marrjes;
-    this.data_dorezimit = data_dorezimit;
-    this.koha_vleresuar = koha_vleresuar;
-  }
 
-  static findAll(callback) {
-    db.query('SELECT * FROM deliveries', (err, results) => {
-      if (err) throw err;
-      callback(results);
+  static findAll(cb) {
+    db.query("SELECT * FROM deliveries", (err, res) => {
+      if (err) return cb(err);
+      cb(null, res);
     });
   }
 
-  static findById(id, callback) {
-    db.query('SELECT * FROM deliveries WHERE id=?', [id], (err, results) => {
-      if (err) throw err;
-      callback(results[0]);
-    });
-  }
-
-  static create(delivery, callback) {
+  static findOrderStatusUpdate(order_id, statusi, cb) {
     db.query(
-      'INSERT INTO deliveries (order_id, driver_id, statusi, data_marrjes, data_dorezimit, koha_vleresuar) VALUES (?, ?, ?, ?, ?, ?)',
-      [
-        delivery.order_id,
-        delivery.driver_id,
-        delivery.statusi,
-        delivery.data_marrjes,
-        delivery.data_dorezimit,
-        delivery.koha_vleresuar
-      ],
-      (err, results) => {
-        if (err) throw err;
-        callback({ id: results.insertId, ...delivery });
-      }
+      "UPDATE orders SET statusi=? WHERE id=?",
+      [statusi, order_id],
+      cb
     );
   }
 
-  static update(delivery, callback) {
+  static create(data, cb) {
+    const q = `
+      INSERT INTO deliveries
+      (order_id, driver_id, statusi, data_marrjes, data_dorezimit, koha_vleresuar)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `;
+
+    db.query(q, [
+      data.order_id,
+      data.driver_id,
+      data.statusi,
+      data.data_marrjes,
+      data.data_dorezimit,
+      data.koha_vleresuar
+    ], (err, result) => {
+      if (err) return cb(err);
+
+      cb(null, {
+        id: result.insertId,
+        ...data
+      });
+    });
+  }
+  static findById(id, cb) {
     db.query(
-      'UPDATE deliveries SET order_id=?, driver_id=?, statusi=?, data_marrjes=?, data_dorezimit=?, koha_vleresuar=? WHERE id=?',
-      [
-        delivery.order_id,
-        delivery.driver_id,
-        delivery.statusi,
-        delivery.data_marrjes,
-        delivery.data_dorezimit,
-        delivery.koha_vleresuar,
-        delivery.id
-      ],
-      (err) => {
-        if (err) throw err;
-        callback(delivery);
+      "SELECT * FROM deliveries WHERE id=?",
+      [id],
+      (err, res) => {
+        if (err) return cb(err);
+        cb(null, res[0]);
       }
     );
   }
+  static update(id, data, cb) {
+    const q = `
+      UPDATE deliveries
+      SET order_id=?, driver_id=?, statusi=?, data_marrjes=?, data_dorezimit=?, koha_vleresuar=?
+      WHERE id=?
+    `;
 
-  static deleteById(id, callback) {
-    db.query('DELETE FROM deliveries WHERE id=?', [id], (err) => {
-      if (err) throw err;
-      callback();
+    db.query(q, [
+      data.order_id,
+      data.driver_id,
+      data.statusi,
+      data.data_marrjes,
+      data.data_dorezimit,
+      data.koha_vleresuar,
+      id
+    ], (err) => {
+      if (err) return cb(err);
+
+      cb(null, { id, ...data });
     });
+  }
+
+  static delete(id, cb) {
+    db.query("DELETE FROM deliveries WHERE id=?", [id], cb);
   }
 }
 

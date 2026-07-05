@@ -1,47 +1,57 @@
 const Drivers = require('../models/deliverydrivers');
 
 const MerrDrivers = (req, res) => {
-  Drivers.findAll((data) => res.json(data));
+  Drivers.findAll((err, data) => {
+    if (err) return res.status(500).json(err);
+    res.json(data);
+  });
 };
 
 const MerrDriverById = (req, res) => {
-  Drivers.findById(req.params.id, (data) => {
+  Drivers.findById(req.params.id, (err, data) => {
+    if (err) return res.status(500).json(err);
     if (!data) return res.status(404).send("Driver nuk u gjet");
     res.json(data);
   });
 };
 
 const ShtoDriver = (req, res) => {
-  const driver = new Drivers(
-    null,
-    req.body.user_id,
-    req.body.automjeti,
-    req.body.targa,
-    req.body.zona,
-    req.body.statusi,
-    req.body.vleresimi
-  );
+  const driver = {
+    user_id: req.body.user_id,
+    automjeti: req.body.automjeti,
+    targa: req.body.targa,
+    zona: req.body.zona,
+    statusi: req.body.statusi || "offline",
+    vleresimi: req.body.vleresimi || 0
+  };
 
-  Drivers.create(driver, (data) => res.status(201).json(data));
+  Drivers.create(driver, (err, data) => {
+    if (err) return res.status(500).json(err);
+    res.status(201).json(data);
+  });
 };
 
 const NdryshoDriver = (req, res) => {
-  const driver = new Drivers(
-    req.params.id,
-    req.body.user_id,
-    req.body.automjeti,
-    req.body.targa,
-    req.body.zona,
-    req.body.statusi,
-    req.body.vleresimi
-  );
+  const driver = {
+    id: req.params.id,
+    user_id: req.body.user_id,
+    automjeti: req.body.automjeti,
+    targa: req.body.targa,
+    zona: req.body.zona,
+    statusi: req.body.statusi,
+    vleresimi: req.body.vleresimi
+  };
 
-  Drivers.update(driver, (data) => res.json(data));
+  Drivers.update(driver, (err, data) => {
+    if (err) return res.status(500).json(err);
+    res.json(data);
+  });
 };
 
 const FshijDriver = (req, res) => {
-  Drivers.deleteById(req.params.id, () => {
-    res.json({ message: "Driver u fshi" });
+  Drivers.deleteById(req.params.id, (err, data) => {
+    if (err) return res.status(500).json(err);
+    res.json(data);
   });
 };
 

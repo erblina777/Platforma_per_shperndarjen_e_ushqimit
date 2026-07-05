@@ -1,4 +1,4 @@
-const Users = require('../models/users');
+const Users = require("../models/users");
 const bcrypt = require("bcryptjs");
 const MerrUserat = (req, res) => {
   Users.findAll((users) => res.json(users));
@@ -45,10 +45,18 @@ const NdryshoUser = (req, res) => {
 };
 
 const FshijUser = (req, res) => {
-  Users.deleteById(req.params.id, () => {
-    res.json({ message: "User u fshi" });
+  Users.deleteById(req.params.id, (err) => {
+    if (err) {
+      return res.status(500).json({
+        message: "Delete failed",
+        error: err.sqlMessage
+      });
+    }
+
+    res.json({ message: "User deleted successfully" });
   });
 };
+
 const changePassword = async (req, res) => {
   try {
     const { id } = req.params;

@@ -3,13 +3,16 @@ import axios from "axios";
 
 export default function DeliveriesSection() {
   const [deliveries, setDeliveries] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [drivers, setDrivers] = useState([]);
+
   const [showForm, setShowForm] = useState(false);
   const [editingDelivery, setEditingDelivery] = useState(null);
 
   const [formData, setFormData] = useState({
     order_id: "",
     driver_id: "",
-    statusi: "",
+    statusi: "Assigned",
     data_marrjes: "",
     data_dorezimit: "",
     koha_vleresuar: ""
@@ -17,44 +20,48 @@ export default function DeliveriesSection() {
 
   useEffect(() => {
     loadDeliveries();
+    loadOrders();
+    loadDrivers();
   }, []);
 
-  const loadDeliveries = () => {
-    axios
-      .get("http://localhost:3000/deliveries")
-      .then((res) => setDeliveries(res.data))
-      .catch((err) => console.log(err));
+  const loadDeliveries = async () => {
+    const res = await axios.get("http://localhost:3000/deliveries");
+    setDeliveries(res.data);
+  };
+
+  const loadOrders = async () => {
+    const res = await axios.get("http://localhost:3000/orders");
+    setOrders(res.data);
+  };
+
+  const loadDrivers = async () => {
+    const res = await axios.get("http://localhost:3000/drivers");
+    setDrivers(res.data);
   };
 
   const openInsert = () => {
     setEditingDelivery(null);
-
     setFormData({
       order_id: "",
       driver_id: "",
-      statusi: "",
+      statusi: "Assigned",
       data_marrjes: "",
       data_dorezimit: "",
       koha_vleresuar: ""
     });
-
     setShowForm(true);
   };
 
-  const openEdit = (delivery) => {
-    setEditingDelivery(delivery);
+  const openEdit = (d) => {
+    setEditingDelivery(d);
 
     setFormData({
-      order_id: delivery.order_id || "",
-      driver_id: delivery.driver_id || "",
-      statusi: delivery.statusi || "",
-      data_marrjes: delivery.data_marrjes
-        ? delivery.data_marrjes.slice(0, 16)
-        : "",
-      data_dorezimit: delivery.data_dorezimit
-        ? delivery.data_dorezimit.slice(0, 16)
-        : "",
-      koha_vleresuar: delivery.koha_vleresuar || ""
+      order_id: d.order_id,
+      driver_id: d.driver_id,
+      statusi: d.statusi,
+      data_marrjes: d.data_marrjes?.slice(0, 16) || "",
+      data_dorezimit: d.data_dorezimit?.slice(0, 16) || "",
+      koha_vleresuar: d.koha_vleresuar
     });
 
     setShowForm(true);
@@ -76,111 +83,71 @@ export default function DeliveriesSection() {
 
       setShowForm(false);
       loadDeliveries();
+      loadOrders();
     } catch (err) {
       console.log(err.response?.data || err.message);
     }
   };
 
   const deleteDelivery = async (id) => {
-    await axios.delete(
-      `http://localhost:3000/deliveries/${id}`
-    );
-
+    await axios.delete(`http://localhost:3000/deliveries/${id}`);
     loadDeliveries();
+    loadOrders();
   };
 
   return (
     <section className="dashboard-section">
       <h2>Deliveries</h2>
 
-      <button onClick={openInsert}>
-        + Add Delivery
-      </button>
-
-      <div className="table-wrapper">
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Order</th>
-              <th>Driver</th>
-              <th>Status</th>
-              <th>Estimated</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {deliveries.map((delivery) => (
-              <tr key={delivery.id}>
-                <td>{delivery.id}</td>
-                <td>{delivery.order_id}</td>
-                <td>{delivery.driver_id}</td>
-                <td>{delivery.statusi}</td>
-                <td>{delivery.koha_vleresuar} min</td>
-
-                <td>
-                  <button
-                    onClick={() => openEdit(delivery)}
-                  >
-                    Edit
-                  </button>
-
-                  <button
-                    className="delete-btn"
-                    onClick={() =>
-                      deleteDelivery(delivery.id)
-                    }
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
+      <button onClick={openInsert}>+ Add Delivery</button>
       {showForm && (
-        <div>
+        <div className="form-box">
           <h3>
-            {editingDelivery
-              ? "Edit Delivery"
-              : "Add Delivery"}
+            {editingDelivery ? "Edit Delivery" : "Add Delivery"}
           </h3>
 
-          <input
-            placeholder="Order ID"
+          <label>Order</label>
+          <select
             value={formData.order_id}
             onChange={(e) =>
-              setFormData({
-                ...formData,
-                order_id: e.target.value
-              })
+              setFormData({ ...formData, order_id: e.target.value })
             }
-          />
+          >
+            <option value="">Select Order</option>
+            {orders.map((o) => (
+              <option key={o.id} value={o.id}>
+                Order #{o.id} - {o.statusi}
+              </option>
+            ))}
+          </select>
 
-          <input
-            placeholder="Driver ID"
+          <label>Driver</label>
+          <select
             value={formData.driver_id}
             onChange={(e) =>
-              setFormData({
-                ...formData,
-                driver_id: e.target.value
-              })
+              setFormData({ ...formData, driver_id: e.target.value })
             }
-          />
+          >
+            <option value="">Select Driver</option>
+            {drivers.map((d) => (
+              <option key={d.id} value={d.id}>
+                Driver #{d.id} - {d.automjeti}
+              </option>
+            ))}
+          </select>
 
-          <input
-            placeholder="Status"
+          <label>Status</label>
+          <select
             value={formData.statusi}
             onChange={(e) =>
-              setFormData({
-                ...formData,
-                statusi: e.target.value
-              })
+              setFormData({ ...formData, statusi: e.target.value })
             }
-          />
+          >
+            <option value="Assigned">Assigned</option>
+            <option value="Picked">Picked</option>
+            <option value="On the way">On the way</option>
+            <option value="Delivered">Delivered</option>
+          </select>
 
           <input
             type="datetime-local"
@@ -205,7 +172,7 @@ export default function DeliveriesSection() {
           />
 
           <input
-            placeholder="Estimated Minutes"
+            placeholder="ETA (minutes)"
             value={formData.koha_vleresuar}
             onChange={(e) =>
               setFormData({
@@ -215,17 +182,63 @@ export default function DeliveriesSection() {
             }
           />
 
-          <button onClick={handleSave}>
-            Save
-          </button>
-
-          <button
-            onClick={() => setShowForm(false)}
-          >
+          <button onClick={handleSave}>Save</button>
+          <button onClick={() => setShowForm(false)}>
             Cancel
           </button>
         </div>
       )}
+      <div className="table-wrapper">
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Order</th>
+              <th>Driver</th>
+              <th>Status</th>
+              <th>ETA</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {deliveries.map((d) => (
+              <tr key={d.id}>
+                <td>{d.id}</td>
+
+                <td>
+                  #{d.order_id} - {
+                    orders.find(o => o.id === d.order_id)?.statusi
+                  }
+                </td>
+
+                <td>
+                  {
+                    drivers.find(dr => dr.id === d.driver_id)
+                      ? `Driver #${d.driver_id}`
+                      : "Unknown"
+                  }
+                </td>
+
+                <td>
+                  <span className={`status-${d.statusi}`}>
+                    {d.statusi}
+                  </span>
+                </td>
+
+                <td>{d.koha_vleresuar} min</td>
+
+                <td>
+                  <button onClick={() => openEdit(d)}>Edit</button>
+                  <button onClick={() => deleteDelivery(d.id)}>
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </section>
   );
 }

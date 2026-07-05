@@ -159,6 +159,9 @@ button {
 ========================= */
 
 .form-box {
+  display:flex;
+  flex-direction:column;
+  gap:10px;
   margin-top: 20px;
   padding: 20px;
   background: #f9fafb;
@@ -166,17 +169,59 @@ button {
   border: 1px solid #e5e7eb;
 }
 
-.form-box input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  outline: none;
+.form-box input,
+.form-box select,
+.form-box textarea {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 15px;
+    background: white;
+    box-sizing: border-box;
+    outline: none;
+    transition: .2s;
 }
 
-.form-box input:focus {
-  border-color: #0d6efd;
+.form-box input:focus,
+.form-box select:focus,
+.form-box textarea:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 3px rgba(37,99,235,.15);
+}
+
+.form-box textarea{
+    min-height:120px;
+    resize:vertical;
+}
+
+.form-box label{
+    display:block;
+    margin-bottom:6px;
+    margin-top:10px;
+    font-weight:600;
+    color:#374151;
+}
+
+.form-box h3{
+    margin-top:0;
+    margin-bottom:18px;
+    color:#111827;
+}
+
+.form-box button{
+    margin-top:10px;
+}
+
+.form-box button:first-of-type{
+    background:#2563eb;
+    color:white;
+}
+
+.form-box button:last-of-type{
+    background:#ef4444;
+    color:white;
 }
 
 /* =========================
@@ -199,6 +244,80 @@ button {
   background: #dc2626;
 }
 
+.status-active{
+    background:#16a34a;
+    color:white;
+    padding:5px 10px;
+    border-radius:20px;
+}
+
+.status-inactive{
+    background:#ef4444;
+    color:white;
+    padding:5px 10px;
+    border-radius:20px;
+}
+
+.status-offline{
+    background:#6b7280;
+    color:white;
+    padding:5px 10px;
+    border-radius:20px;
+}
+
+.status-busy{
+    background:#f59e0b;
+    color:white;
+    padding:5px 10px;
+    border-radius:20px;
+}
+
+.status-assigned{
+    background:#2563eb;
+    color:white;
+    padding:5px 10px;
+    border-radius:20px;
+}
+
+.status-picked{
+    background:#8b5cf6;
+    color:white;
+    padding:5px 10px;
+    border-radius:20px;
+}
+
+.status-on\ the\ way{
+    background:#f97316;
+    color:white;
+    padding:5px 10px;
+    border-radius:20px;
+}
+
+.status-delivered{
+    background:#16a34a;
+    color:white;
+    padding:5px 10px;
+    border-radius:20px;
+}
+
+.status-pending{
+    background:#eab308;
+    color:white;
+    padding:5px 10px;
+    border-radius:20px;
+}
+
+.status-cancelled{
+    background:#dc2626;
+    color:white;
+    padding:5px 10px;
+    border-radius:20px;
+}
+
+.admin-table img{
+    border-radius:10px;
+    object-fit:cover;
+}
 /* =========================
    RESPONSIVE
 ========================= */
