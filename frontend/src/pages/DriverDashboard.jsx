@@ -2,8 +2,6 @@
 import DriverStats from "../components/driver/DriverStats";
 import DriverInfo from "../components/driver/DriverInfo";
 import DeliveriesSection from "../components/driver/DeliveriesSection";
-import DriverReviews from "../components/driver/DriverReviews";
-
 import "../styles/DriverDashboard.css";
 
 export default function DriverDashboard() {
@@ -18,8 +16,6 @@ export default function DriverDashboard() {
       <DriverInfo />
 
       <DeliveriesSection />
-
-      <DriverReviews />
 
     </div>
   );

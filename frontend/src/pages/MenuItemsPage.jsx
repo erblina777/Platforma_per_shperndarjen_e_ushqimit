@@ -30,15 +30,18 @@ export default function MenuItemsPage() {
 
   const fetchItems = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:3000/menuitems",
-        {
-          params: {
-            ...filters,
-            restaurantId: id
-          }
+      console.log("Restaurant ID:", id);
+
+      const res = await axios.get("http://localhost:3000/menuitems", {
+        params: {
+          search: filters.search,
+          minPrice: filters.minPrice,
+          maxPrice: filters.maxPrice,
+          restaurantId: id
         }
-      );
+      });
+
+      console.log("Response:", res.data);
 
       setItems(res.data || []);
     } catch (err) {

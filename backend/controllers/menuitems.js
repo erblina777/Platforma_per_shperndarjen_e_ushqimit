@@ -1,14 +1,17 @@
 const MenuItems = require('../models/menuitems');
 
 exports.getAll = (req, res) => {
+  console.log("GET ALL QUERY:", req.query);
 
   const filters = {
     search: req.query.search,
     minPrice: req.query.minPrice,
     maxPrice: req.query.maxPrice,
+    restaurantId: req.query.restaurantId   // 👈 ADD THIS
   };
 
   MenuItems.findAll(filters, (data) => {
+    console.log("RESULT:", data.length);
     res.json(data);
   });
 };
