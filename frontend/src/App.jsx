@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
-
+import GuestRoute from "./components/GuestRoute";
 import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
@@ -28,8 +28,12 @@ export default function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        import GuestRoute from "./components/GuestRoute";
+
+        <Route element={<GuestRoute />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+        </Route>
         <Route path="/profil" element={<ProfilPage />} />
         <Route path="/menu/:id" element={<MenuItemDetails />} />
         <Route path="/restaurants/:id" element={<RestaurantDetailsPage />} />
