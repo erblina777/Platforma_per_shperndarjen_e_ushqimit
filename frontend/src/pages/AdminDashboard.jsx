@@ -25,8 +25,6 @@ export default function AdminDashboard() {
 
       <DeliveriesSection />
 
-      <ReviewsSection />
-
     </div>
   );
 }

@@ -26,8 +26,6 @@ export default function RestaurantDashboard() {
 
       <PromotionsSection restaurant={restaurant} />
 
-      <ReviewsSection restaurant={restaurant} />
-
     </div>
   );
 }
