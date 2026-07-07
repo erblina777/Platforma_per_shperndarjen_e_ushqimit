@@ -7,7 +7,7 @@ exports.getAll = (req, res) => {
     search: req.query.search,
     minPrice: req.query.minPrice,
     maxPrice: req.query.maxPrice,
-    restaurantId: req.query.restaurantId   // 👈 ADD THIS
+    restaurantId: req.query.restaurantId 
   };
 
   MenuItems.findAll(filters, (data) => {
